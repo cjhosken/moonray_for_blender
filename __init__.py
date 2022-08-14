@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bpy
+from bpy.utils import register_class, unregister_class
+
 bl_info = {
     "name" : "MoonRay Render Engine",
     "author" : "Christopher Hosken",
@@ -23,12 +26,41 @@ bl_info = {
     "category" : "Render"
 }
 
-from . import auto_load
+class MoonRayRender(bpy.types.RenderEngine):
+    bl_idname = "MOONRAY"
+    bl_label = "MoonRay"
+    bl_use_preview = True
+    bl_use_shading_nodes_custom = False
 
-auto_load.init()
+    def __init__(self):
+        pass
+
+    def __del__(self):
+        pass
+
+    def render(self, depsgraph):
+        pass
+
+    def view_update(self, context, depsgraph):
+        pass
+
+    def view_draw(self, context, depsgraph):
+        pass
+
+
+classes = [MoonRayRender]
+
+from . import moonray_ui
+from . import moonray_bl_nodes
 
 def register():
-    auto_load.register()
+    for cls in classes:
+        register_class(cls)
+    moonray_ui.register()
+    moonray_bl_nodes.register()
 
 def unregister():
-    auto_load.unregister()
+    for cls in classes:
+        unregister_class(cls)
+    moonray_ui.unregister()
+    moonray_bl_nodes.unregister()
