@@ -58,8 +58,6 @@ __MOONRAY_TYPES_SOCKET_INTERFACES__ =[
 ]
 
 class MoonRaySocket:
-    ui_open: BoolProperty(name='UI Open', default=True)
-
     def get_pretty_name(self, node):
         if node.bl_idname in __CYCLES_GROUP_NODES__:
             return self.name
@@ -78,8 +76,38 @@ class MoonRaySocket:
     def draw_value(self, context, layout, node):
         layout.prop(node, self.identifier)
 
-    def draw(self, context, layout, node, text):            
-            
+    def draw(self, context, layout, node, text):      
+        moonray_type = getattr(self, 'moonray_type', '')
+        if self.hide and self.hide_value:
+            pass
+        elif self.hide_value:
+            layout.label(text=self.get_pretty_name(node))
+        elif self.is_linked or self.is_output:
+            layout.label(text=self.get_pretty_name(node))
+        elif moonray_type in __SOCKET_HIDE_VALUE__:
+            layout.label(text=self.get_pretty_name(node))                        
+        elif hasattr(node, self.name):
+            layout.prop(node, self.name,
+                        text=self.get_pretty_name(node), slider=True)
+        else:
+            # check if this is an array element
+            expr = re.compile(r'.*(\[\d+\])')
+            m = expr.match(self.name)
+            if m and m.groups():
+                group = m.groups()[0]
+                coll_nm = self.name.replace(group, '')
+                collection = getattr(node, '%s_collection' % coll_nm)
+                elem = None
+                for e in collection:
+                    if e.name == self.name:
+                        elem = e
+                        break
+                if elem:               
+                    layout.prop(elem, 'value_%s' % elem.type, text=elem.name, slider=True)
+                else:
+                    layout.label(text=self.get_pretty_name(node))
+            else:
+                layout.label(text=self.get_pretty_name(node))      
         mat = getattr(context, 'material')
         if mat:
             return
@@ -93,11 +121,24 @@ class MoonRaySocketInterface:
         layout.label(text=self.name)
 
     def from_socket(self, node, socket):
-        pass
+        if hasattr(self, 'default_value'):
+            self.default_value = socket.get_value(node)
+        if hasattr(self, 'struct_name'):
+            self.struct_name = socket.struct_name         
+        if hasattr(self, 'is_texture'):
+            self.is_texture = socket.is_texture
+        self.name = socket.name
 
 
     def init_socket(self, node, socket, data_path):
-        pass
+        time.sleep(.01)
+        socket.name = self.name
+        if hasattr(self, 'default_value'):
+            socket.default_value = self.default_value
+        if hasattr(self, 'struct_name'):
+            socket.struct_name = self.struct_name   
+        if hasattr(self, 'is_texture'):
+            socket.is_texture = self.is_texture  
 
 classes = []
 
@@ -108,6 +149,7 @@ def register_socket_classes():
         return self.socket_color
 
     for socket_info in __MOONRAY_TYPES_SOCKETS__:
+        moonray_type = socket_info[0]
         label = socket_info[1]
         typename = 'MoonRayNodeSocket%s' % label
         ntype = type(typename, (socket_info[2], MoonRaySocket,), {})
@@ -117,13 +159,14 @@ def register_socket_classes():
             setattr(ntype, "__annotations__", {})        
         ntype.draw_color = draw_color
         ntype.socket_color = socket_info[3]
+        ntype.__annotations__['moonray_type'] = StringProperty(default='%s' % moonray_type)
         if socket_info[4]:
             ntype.__annotations__['hide_value'] = True
         ann_dict = socket_info[5]
         for k, v in ann_dict.items():
             ntype.__annotations__[k] = v
 
-        classes.append(ntype) 
+        classes.append(ntype)
 
 def register_socket_interface_classes():
     global classes
@@ -132,10 +175,11 @@ def register_socket_interface_classes():
         return self.socket_color
     
     for socket_info in __MOONRAY_TYPES_SOCKET_INTERFACES__:
+        moonray_type = socket_info[0]
         label = socket_info[1]
         typename = 'MoonRayNodeSocketInterface%s' % label
         ntype = type(typename, (socket_info[2], MoonRaySocketInterface,), {})        
-        # bl_socket_idname needs to correspond to the MoonRayNodeSocket class
+        # bl_socket_idname needs to correspond to the RendermanNodeSocket class
         ntype.bl_socket_idname = 'MoonRayNodeSocket%s' % label
         if "__annotations__" not in ntype.__dict__:
             setattr(ntype, "__annotations__", {})        

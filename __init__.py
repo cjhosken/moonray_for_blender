@@ -47,8 +47,9 @@ class MoonRayRender(bpy.types.RenderEngine):
     def view_draw(self, context, depsgraph):
         pass
 
+from .preferences import MoonRayPreferences
 
-classes = [MoonRayRender]
+classes = [MoonRayPreferences, MoonRayRender]
 
 from . import moonray_ui
 from . import moonray_bl_nodes

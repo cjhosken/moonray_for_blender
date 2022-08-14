@@ -2,8 +2,19 @@ import bpy
 from bpy.props import EnumProperty, StringProperty, CollectionProperty, BoolProperty, PointerProperty
 from nodeitems_utils import NodeCategory
 
+from ..preferences import get_user_prefs
+from ..moonray_utils import shadergraph_utils
+
+def get_color(node_type):
+    type_id = ["output"].index(node_type)
+    prefs = get_user_prefs()
+    return [prefs.output_node_color][type_id]
+
+
 class MoonRayShadingNode(bpy.types.ShaderNode):
-    bl_label = 'Output'
+    bl_label = 'MoonRay'
+    moonray_node_type = 'output'
+
     @classmethod
     def poll(cls, ntree):
         rd = bpy.context.scene.render
@@ -14,7 +25,7 @@ class MoonRayShadingNode(bpy.types.ShaderNode):
             return ntree.bl_idname == 'ShaderNodeTree'
         else:
             return True    
-        
+    
     def draw_buttons(self, context, layout):
         nt = self.id_data
         mat = context.material
@@ -31,7 +42,18 @@ class MoonRayShadingNode(bpy.types.ShaderNode):
             if not from_node_type:
                 continue            
             if not to_node_type:
-                continue            
+                continue
+
+            if not shadergraph_utils.is_socket_same_type(link.from_socket, link.to_socket):
+                node_tree = self.id_data
+                try:
+                    node_tree.links.remove(link)
+                except:
+                    pass
+    
+    def copy(self, node):
+        pass
+
 
 class MoonRayShaderNodeCategory(NodeCategory):
     @classmethod
@@ -39,4 +61,20 @@ class MoonRayShaderNodeCategory(NodeCategory):
         rd = context.scene.render
         if (rd.engine != "MOONRAY"):
             return False
-        return context.space_data.tree_type == "ShaderNodeTree" and context.space_data.shader_type in ["OBJECT", "WORLD"]
+        return context.space_data.tree_type == "ShaderNodeTree" and context.space_data.shader_type in ["OBJECT"] and bpy.context.active_object.type != "LIGHT"
+
+class MoonRayWorldNodeCategory(NodeCategory):
+    @classmethod
+    def poll(cls, context):
+        rd = context.scene.render
+        if (rd.engine != "MOONRAY"):
+            return False
+        return context.space_data.tree_type == "ShaderNodeTree" and context.space_data.shader_type in ["WORLD"]
+
+class MoonRayLightNodeCategory(NodeCategory):
+    @classmethod
+    def poll(cls, context):
+        rd = context.scene.render
+        if (rd.engine != "MOONRAY"):
+            return False
+        return context.space_data.tree_type == "ShaderNodeTree" and context.space_data.shader_type in ["OBJECT"] and bpy.context.active_object.type == "LIGHT"

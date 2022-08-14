@@ -3,20 +3,25 @@ from bpy.utils import register_class, unregister_class
 
 from . import moonray_bl_nodes_sockets
 
-from .moonray_bl_nodes_base import MoonRayShadingNode, MoonRayShaderNodeCategory
-from .moonray_bl_nodes_output import MoonRayOutputNode
+from .moonray_bl_nodes_base import MoonRayShadingNode, MoonRayShaderNodeCategory, MoonRayWorldNodeCategory, MoonRayLightNodeCategory
+from .nodes.moonray_bl_nodes_output import MoonRayShaderOutputNode, MoonRayWorldOutputNode, MoonRayLightOutputNode
 
 
 __MOONRAY_NODES_ALREADY_REGISTERED__ = False
 
-classes = [MoonRayShadingNode, MoonRayOutputNode]
+classes = [MoonRayShaderOutputNode, MoonRayWorldOutputNode, MoonRayLightOutputNode]
 
 __MOONRAY_NODE_CATEGORIES__ = [
-    MoonRayShaderNodeCategory("MOONRAY", "MoonRay", items=[
-        NodeItem("MoonRay_OutputNode")
+    MoonRayShaderNodeCategory("MOONRAYSHADERS", "MoonRay", items=[
+        NodeItem("MoonRay_ShaderOutputNode")
+    ]),
+    MoonRayWorldNodeCategory("MOONRAYWOLRDS", "MoonRay", items=[
+        NodeItem("MoonRay_WorldOutputNode")
+    ]),
+    MoonRayLightNodeCategory("MOONRAYLIGHTS", "MoonRay", items=[
+        NodeItem("MoonRay_LightOutputNode")
     ])
 ]
-
 
 def register():
     moonray_bl_nodes_sockets.register()
