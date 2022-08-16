@@ -13,12 +13,15 @@ class RENDER_PT_moonray_render(MoonRayButtonsPanel, Panel):
         if context.scene.render.engine != "MOONRAY":
             return
 
-        layout = self.layout
+class RENDER_PT_moonray_samples(MoonRayButtonsPanel, Panel):
+    bl_label = "Samples"
 
-        row = layout.row(align=True)
-        row.operator("render.render", text="Render")
+    def draw(self, context):
+        self.layout.use_property_split = True
+        self.layout.use_property_decorate = False
 
-        # Batch Render
-        row.operator("render.render", text="Render Animation").animation = True
+        if context.scene.render.engine != "MOONRAY":
+            return
 
-classes = [RENDER_PT_moonray_render]
+
+classes = [RENDER_PT_moonray_render, RENDER_PT_moonray_samples]

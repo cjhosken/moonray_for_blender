@@ -5,7 +5,6 @@ from bpy.types import Panel
 class MATERIAL_PT_moonray_preview(ShaderPanel, Panel):
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
-    bl_options = {'DEFAULT_CLOSED'}
     bl_context = "material"
     bl_label = "Preview"
 
@@ -28,7 +27,7 @@ class MATERIAL_PT_moonray_preview(ShaderPanel, Panel):
 
 class MATERIAL_PT_moonray_shader_surface(ShaderPanel, Panel):
     bl_context = "material"
-    bl_label = "Shader"
+    bl_label = "Surface"
     shader_type = 'Shader'
 
     def draw(self, context):
