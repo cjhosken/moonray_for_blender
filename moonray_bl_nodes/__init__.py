@@ -4,12 +4,14 @@ from bpy.utils import register_class, unregister_class
 from . import moonray_bl_nodes_sockets
 
 from .moonray_bl_nodes_base import MoonRayShadingNode, MoonRayShaderNodeCategory, MoonRayWorldNodeCategory, MoonRayLightNodeCategory
-from .nodes.moonray_bl_nodes_output import MoonRayShaderOutputNode, MoonRayWorldOutputNode, MoonRayLightOutputNode
+from .nodes.light import classes as light_classes
+from .nodes.shader import classes as shader_classes
+from .nodes.world import classes as world_classes
 
 
 __MOONRAY_NODES_ALREADY_REGISTERED__ = False
 
-classes = [MoonRayShaderOutputNode, MoonRayWorldOutputNode, MoonRayLightOutputNode]
+classes = shader_classes + light_classes + world_classes
 
 __MOONRAY_NODE_CATEGORIES__ = [
     MoonRayShaderNodeCategory("MOONRAYSHADERS", "MoonRay", items=[
@@ -19,7 +21,8 @@ __MOONRAY_NODE_CATEGORIES__ = [
         NodeItem("MoonRay_WorldOutputNode")
     ]),
     MoonRayLightNodeCategory("MOONRAYLIGHTS", "MoonRay", items=[
-        NodeItem("MoonRay_LightOutputNode")
+        NodeItem("MoonRay_LightOutputNode"),
+        NodeItem("MoonRay_EnvLightNode")
     ])
 ]
 

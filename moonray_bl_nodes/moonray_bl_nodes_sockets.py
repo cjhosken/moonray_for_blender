@@ -12,49 +12,29 @@ def update_func(self, context):
     node = self.node if hasattr(self, 'node') else self
 
 __MOONRAY_TYPES_SOCKETS__ = [
-    ('float', 'Float', bpy.types.NodeSocketFloat, (0.5, 0.5, 0.5, 1.0), False,
-        {
-            'default_value': FloatProperty(update=update_func),
-        }
-    ),
-    ('int', 'Int', bpy.types.NodeSocketInt, (1.0, 1.0, 1.0, 1.0), False,
-        {
-            'default_value': IntProperty(update=update_func),
-        }
-    ),
-        ('bxdf', 'Bxdf', bpy.types.NodeSocketString, (0.25, 1.0, 0.25, 1.0), True,
+    ('bxdf', 'Bxdf', bpy.types.NodeSocketString, (0.25, 1.0, 0.25, 1.0), True,
         {
             'default_value': StringProperty(default=''),
         }
     ),   
-        ('color', 'Color', bpy.types.NodeSocketColor, (1.0, 1.0, .5, 1.0), False,
+    ('light', 'Light', bpy.types.NodeSocketColor, (1.0, 1.0, .5, 1.0), False,
         {
-            'default_value': FloatVectorProperty(size=3, subtype="COLOR", update=update_func),
+            'default_value': StringProperty(default=''),
         }
     ), 
 ]
 
 __MOONRAY_TYPES_SOCKET_INTERFACES__ =[
-    ('float', 'Float', bpy.types.NodeSocketInterfaceFloat, (0.5, 0.5, 0.5, 1.0), False,
-        {
-            'default_value': FloatProperty() 
-        }
-    ),
-    ('int', 'Int', bpy.types.NodeSocketInterfaceInt, (1.0, 1.0, 1.0, 1.0), False,
-        {
-            'default_value': IntProperty()
-        }
-    ),    
     ('bxdf', 'Bxdf', bpy.types.NodeSocketInterfaceString, (0.25, 1.0, 0.25, 1.0), True,
         {
             'default_value': StringProperty(default=''),
         }
-    ),       
-    ('color', 'Color', bpy.types.NodeSocketInterfaceColor, (1.0, 1.0, .5, 1.0), False,
+    ),    
+    ('light', 'Light', bpy.types.NodeSocketInterfaceColor, (1.0, 1.0, .5, 1.0), False,
         {
-            'default_value': FloatVectorProperty(size=3, subtype="COLOR", update=update_func),
+            'default_value': StringProperty(default=''),
         }
-    ),      
+    ),
 ]
 
 class MoonRaySocket:

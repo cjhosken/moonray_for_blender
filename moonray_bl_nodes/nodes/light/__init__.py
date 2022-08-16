@@ -1,0 +1,4 @@
+from .moonray_bl_nodes_light_output import MoonRayLightOutputNode
+from .moonray_bl_nodes_light_environment import MoonRayLightEnvironmentNode
+
+classes = [MoonRayLightOutputNode, MoonRayLightEnvironmentNode]

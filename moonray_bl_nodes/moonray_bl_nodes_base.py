@@ -54,6 +54,15 @@ class MoonRayShadingNode(bpy.types.ShaderNode):
     def copy(self, node):
         pass
 
+    def add_input(self, type, name, default=None, enabled=True):
+        input = self.inputs.new(type, name)
+
+        if hasattr(input, "default_value"):
+            input.default_value = default
+
+        input.enabled = enabled
+        return input
+
 
 class MoonRayShaderNodeCategory(NodeCategory):
     @classmethod
