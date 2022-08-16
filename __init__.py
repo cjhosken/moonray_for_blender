@@ -30,6 +30,7 @@ class MoonRayRender(bpy.types.RenderEngine):
     bl_idname = "MOONRAY"
     bl_label = "MoonRay"
     bl_use_preview = True
+    bl_use_texture_preview = False
     bl_use_shading_nodes_custom = False
 
     def __init__(self):
@@ -47,9 +48,9 @@ class MoonRayRender(bpy.types.RenderEngine):
     def view_draw(self, context, depsgraph):
         pass
 
-from .preferences import MoonRayPreferences
+from .preferences import classes as preferences_classes
 
-classes = [MoonRayPreferences, MoonRayRender]
+classes = [MoonRayRender] + preferences_classes
 
 from . import moonray_ui
 from . import moonray_bl_nodes

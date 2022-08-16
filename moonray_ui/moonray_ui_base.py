@@ -55,7 +55,12 @@ class CollectionPanel(_MoonRayPanelHeader):
 class MoonRayButtonsPanel(_MoonRayPanelHeader):
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
-    bl_context = "render"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    @classmethod
+    def poll(cls, context):
+        return context.scene.render.engine == "MOONRAY"
+    
 
 class ShaderNodePanel(_MoonRayPanelHeader):
     bl_space_type = 'PROPERTIES'
@@ -94,6 +99,7 @@ class ShaderPanel(_MoonRayPanelHeader):
             return (hasattr(context, "world") and context.world is not None and is_moonray)
         elif cls.bl_context == 'material':
             return (hasattr(context, "material") and context.material is not None and is_moonray)
+        
 
 classes = [
     MOONRAY_UL_Basic_UIList
