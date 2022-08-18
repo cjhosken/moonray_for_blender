@@ -37,7 +37,7 @@ This code has been modified from:
 MoonRay For Blender was written by me, Christopher Hosken. If you have any concerns, ideas, or would like to help with developing this addon you can get in contact with me here.
 
 - [hoskenchristopher@gmail.com](https://hoskenchristopher@gmail.com)
-- [LinkedIn](https://www.linkedin.com/in/christopher-hosken-637a53186/)
+- [LinkedIn](https://www.linkedin.com/in/christopher-hosken/)
 
 
 # License
