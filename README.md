@@ -6,7 +6,7 @@ MoonRay for Blender is a render engine addon which allows users to utilise Dream
 
 To use, download the latest release of the MoonRayForBlender addon and save the zip file. 
 
-Start Blender and from the File -> User Preferences -> Add-ons install the zip file.
+Start Blender and from `File -> User Preferences -> Add-ons` install the zip file.
 
 You should then be able to select MoonRay in the render engines.
 
