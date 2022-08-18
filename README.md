@@ -22,4 +22,4 @@ If you need help, report an issue and I will try to deal with it as soon as poss
 
 This addon is written by Christopher Hosken.
 
-*MoonRayForBlender is in no way affiliated with Dreamworks*
+*MoonRayForBlender is in no way affiliated with DreamWorks or DreamWorks Animation*
