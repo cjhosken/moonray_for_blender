@@ -20,4 +20,6 @@ If you need help, report an issue and I will try to deal with it as soon as poss
 
 # Acknowledgements
 
-This addon is written by Christopher Hosken
+This addon is written by Christopher Hosken.
+
+*MoonRayForBlender is in no way affiliated with Dreamworks*
