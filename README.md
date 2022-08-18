@@ -18,8 +18,22 @@ If you need help, report an issue and I will try to deal with it as soon as poss
 
 * Blender 3.2.1 
 
+
 # Acknowledgements
 
 This addon is written by Christopher Hosken.
 
+This code has been modified from:
+
+- [RenderManForBlender](https://github.com/prman-pixar/RenderManForBlender)
+
+- [BlendLuxCore](https://github.com/prman-pixar/RenderManForBlender)
+
+//TODO fix credits
+
+
 *MoonRayForBlender is in no way affiliated with DreamWorks or DreamWorks Animation*
+
+# License
+
+GNU General Public License v3.0, see `LICENSE` for details.

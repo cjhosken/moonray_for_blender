@@ -45,9 +45,6 @@ def register():
 def unregister():
     for cls in classes:
         unregister_class(cls)
-
-
-
     try:
         unregister_node_categories('MOONRAYSHADERNODES')
     except:
