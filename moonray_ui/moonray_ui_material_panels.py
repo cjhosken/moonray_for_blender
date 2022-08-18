@@ -1,8 +1,8 @@
-from .moonray_ui_base import _MoonRayPanelHeader, ShaderPanel, ShaderNodePanel, CollectionPanel 
 import bpy
-from bpy.types import Panel
+from .moonray_ui_base import MoonRayPanel
 
-class MATERIAL_PT_moonray_preview(ShaderPanel, Panel):
+
+class MATERIAL_PT_moonray_preview(MoonRayPanel, bpy.types.Panel):
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "material"
@@ -10,9 +10,11 @@ class MATERIAL_PT_moonray_preview(ShaderPanel, Panel):
 
     @classmethod
     def poll(cls, context):
-        if context.scene.render.engine != "MOONRAY":
-            return        
+        if not MoonRayPanel.poll(context):
+            return False   
+
         mat = getattr(context, 'material', None)
+        
         if not mat:
             return False 
         return True      
@@ -25,28 +27,26 @@ class MATERIAL_PT_moonray_preview(ShaderPanel, Panel):
         if mat:
             row.template_preview(context.material, show_buttons=1)
 
-class MATERIAL_PT_moonray_shader_surface(ShaderPanel, Panel):
+class MATERIAL_PT_moonray_shader_surface(MoonRayPanel, bpy.types.Panel):
     bl_context = "material"
     bl_label = "Surface"
     shader_type = 'Shader'
 
     def draw(self, context):
-        pass
+        layout = self.layout
 
-class MOONRAY_PT_context_material(_MoonRayPanelHeader, Panel):
-    bl_space_type = "PROPERTIES"
-    bl_region_type = "WINDOW"
-    bl_label = ""
+class MOONRAY_PT_context_material(MoonRayPanel, bpy.types.Panel):
     bl_context = "material"
     bl_options = {'HIDE_HEADER'}
-    COMPAT_ENGINES = {'MOONRAY'}
 
     @classmethod
     def poll(cls, context):
-        if context.active_object and context.active_object.type == 'GPENCIL':
+        ob = context.active_object
+
+        if ob and ob.type == "GPENCIL":
             return False
         else:
-            return (context.material or context.object) and _MoonRayPanelHeader.poll(context)
+            return (context.material or context.object) and MoonRayPanel.poll(context)
 
     def draw(self, context):
         layout = self.layout

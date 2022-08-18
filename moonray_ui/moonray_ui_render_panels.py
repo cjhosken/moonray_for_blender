@@ -1,34 +1,29 @@
-from .moonray_ui_base import _MoonRayPanelHeader, CollectionPanel, MoonRayButtonsPanel
-
-from bpy.types import Panel
 import bpy
+from .moonray_ui_base import MoonRayPanel
 
-class RENDER_PT_moonray_render(MoonRayButtonsPanel, Panel):
+
+class RENDER_PT_moonray_render(MoonRayPanel, bpy.types.Panel):
     bl_context = "render"
     bl_label = "Render"
 
-
     def draw(self, context):
-        self.layout.use_property_split = True
-        self.layout.use_property_decorate = False
+        layout = self.layout
 
 
-class RENDER_PT_moonray_samples(MoonRayButtonsPanel, Panel):
+class RENDER_PT_moonray_samples(MoonRayPanel, bpy.types.Panel):
     bl_context = "render"
     bl_label = "Samples"
 
     def draw(self, context):
-        self.layout.use_property_split = True
-        self.layout.use_property_decorate = False
+        layout = self.layout
 
 
-class RENDER_PT_moonray_motion_blur(MoonRayButtonsPanel, Panel):
+class RENDER_PT_moonray_motion_blur(MoonRayPanel, bpy.types.Panel):
     bl_context = "render"
     bl_label = "Motion Blur"
 
     def draw(self, context):
-        self.layout.use_property_split = True
-        self.layout.use_property_decorate = False
+        layout = self.layout
 
 
 classes = [RENDER_PT_moonray_render, RENDER_PT_moonray_samples, RENDER_PT_moonray_motion_blur]

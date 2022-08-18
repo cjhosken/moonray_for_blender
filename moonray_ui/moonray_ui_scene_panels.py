@@ -1,14 +1,12 @@
-from .moonray_ui_base import _MoonRayPanelHeader, ShaderPanel, ShaderNodePanel, CollectionPanel, MoonRayButtonsPanel
 import bpy
-from bpy.types import Panel
+from .moonray_ui_base import MoonRayPanel
 
-class SCENE_PT_moonray_light_groups(MoonRayButtonsPanel, Panel):
+class SCENE_PT_moonray_light_groups(MoonRayPanel, bpy.types.Panel):
     bl_context = "scene"
     bl_label = "MoonRay Light Groups"
 
     def draw(self, context):
-        self.layout.use_property_split = True
-        self.layout.use_property_decorate = False
+        layout = self.layout
 
 
 classes = [SCENE_PT_moonray_light_groups]

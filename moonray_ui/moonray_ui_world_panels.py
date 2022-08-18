@@ -1,17 +1,16 @@
-from .moonray_ui_base import _MoonRayPanelHeader, ShaderPanel, ShaderNodePanel, CollectionPanel 
 import bpy
-from bpy.types import Panel
+from .moonray_ui_base import MoonRayPanel
 
-class MATERIAL_PT_moonray_world_preview(ShaderPanel, Panel):
-    bl_space_type = 'PROPERTIES'
-    bl_region_type = 'WINDOW'
+
+class MATERIAL_PT_moonray_world_preview(MoonRayPanel, bpy.types.Panel):
     bl_context = "world"
     bl_label = "Preview"
 
     @classmethod
     def poll(cls, context):
-        if context.scene.render.engine != "MOONRAY":
-            return        
+        if not MoonRayPanel.poll(context):
+            return False   
+            
         wor = getattr(context, 'world', None)
         if not wor:
             return False 
@@ -23,12 +22,12 @@ class MATERIAL_PT_moonray_world_preview(ShaderPanel, Panel):
         row = layout.row()
 
         if wor:
-            row.template_preview(context.world, show_buttons=1)
+            row.template_preview(wor, show_buttons=1)
 
 
-class MATERIAL_PT_moonray_world_surface(ShaderPanel, Panel):
+class MATERIAL_PT_moonray_world_surface(MoonRayPanel, bpy.types.Panel):
     bl_context = "world"
-    bl_label = "Surface"
+    bl_label = "MoonRay Surface"
     shader_type = 'World'
 
     def draw(self, context):

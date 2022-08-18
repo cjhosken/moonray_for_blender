@@ -1,29 +1,19 @@
-from bl_ui.properties_data_light import DataButtonsPanel
-from .moonray_ui_base import _MoonRayPanelHeader, ShaderPanel, ShaderNodePanel, CollectionPanel, MoonRayButtonsPanel
 import bpy
-from bpy.types import Panel
+from .moonray_ui_base import MoonRayPanel
 
-class LIGHT_PT_moonray_light(DataButtonsPanel, Panel):
-    COMPAT_ENGINES = {"MOONRAY"}
+
+class LIGHT_PT_moonray_light(MoonRayPanel, bpy.types.Panel):
     bl_label = "MoonRay Light"
     bl_idname = "DATA_PT_light"
     bl_order = 1
 
-
-    
-
     @classmethod
     def poll(cls, context):
-        engine = context.scene.render.engine
-        return context.light and engine == "MOONRAY"
-
+        return MoonRayPanel.poll(context) and context.light
 
     def draw(self, context):
         layout = self.layout
-
         light = context.light
-
         layout.row().prop(light, "type", expand=True)
-
 
 classes = [LIGHT_PT_moonray_light]

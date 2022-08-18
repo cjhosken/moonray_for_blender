@@ -53,16 +53,16 @@ from .preferences import classes as preferences_classes
 classes = [MoonRayRender] + preferences_classes
 
 from . import moonray_ui
-from . import moonray_bl_nodes
+from . import moonray_nodes
 
 def register():
     for cls in classes:
         register_class(cls)
     moonray_ui.register()
-    moonray_bl_nodes.register()
+    moonray_nodes.register()
 
 def unregister():
     for cls in classes:
         unregister_class(cls)
     moonray_ui.unregister()
-    moonray_bl_nodes.unregister()
+    moonray_nodes.unregister()

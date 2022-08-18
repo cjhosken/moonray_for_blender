@@ -1,13 +1,11 @@
-from .moonray_ui_base import _MoonRayPanelHeader, ShaderPanel, ShaderNodePanel, CollectionPanel, MoonRayButtonsPanel
 import bpy
-from bpy.types import Panel
+from .moonray_ui_base import MoonRayPanel
 
-class VIEWLAYER_PT_moonray_aovs(MoonRayButtonsPanel, Panel):
+class VIEWLAYER_PT_moonray_aovs(MoonRayPanel, bpy.types.Panel):
     bl_context = "view_layer"
     bl_label = "MoonRay AOVs"
 
     def draw(self, context):
-        self.layout.use_property_split = True
-        self.layout.use_property_decorate = False
+        layout = self.layout
 
 classes = [VIEWLAYER_PT_moonray_aovs]
