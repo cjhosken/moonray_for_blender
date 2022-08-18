@@ -27,9 +27,6 @@ This code has been modified from:
 
 - [BlendLuxCore](https://github.com/prman-pixar/RenderManForBlender)
 
-//TODO fix credits
-
-
 *MoonRayForBlender is in no way affiliated with DreamWorks or DreamWorks Animation*
 
 ## Contact
