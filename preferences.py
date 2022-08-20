@@ -1,26 +1,18 @@
 import bpy
+from bpy.types import AddonPreferences, PropertyGroup, Scene
 from bpy.props import *
 
-class MoonRayPreferences(bpy.types.AddonPreferences):
+class PREFERENCES_PT_moonray_addon(AddonPreferences):
     bl_idname = __package__
 
     def draw(self, context):
         layout = self.layout
         col = layout.column()
 
-def get_user_prefs(context=None):
-    if not context:
-        context = bpy.context
+class MoonRayPreferences(PropertyGroup):
+    temp: BoolProperty()
 
-    if hasattr(context, "user_preferences"):
-        prefs = context.user_preferences.addons[__package__]
-    elif hasattr(context, "preferences"):
-        prefs = context.preferences.addons[__package__]
-    if prefs:
-        return prefs.preferences
-    return None
-
-class MoonRayConfig(bpy.types.PropertyGroup):
+class MoonRayConfig(PropertyGroup):
     
     devices = [
         ("CPU", "CPU", "Use CPU", 0),
@@ -29,12 +21,15 @@ class MoonRayConfig(bpy.types.PropertyGroup):
 
     device: EnumProperty(name="Device", items=devices, default="CPU")
 
-class MoonRayScene(bpy.types.PropertyGroup):
+
+class MoonRayScene(PropertyGroup):
     config: PointerProperty(type=MoonRayConfig)
+
+    prefs: PointerProperty(type=MoonRayPreferences)
 
     @classmethod
     def register(cls):
-        bpy.types.Scene.moonray = PointerProperty(
+        Scene.moonray = PointerProperty(
             name="MoonRay Scene Settings",
             description="MoonRay scene settings",
             type=cls,
@@ -42,6 +37,6 @@ class MoonRayScene(bpy.types.PropertyGroup):
 
     @classmethod
     def unregister(cls):
-        del bpy.types.Scene.moonray
+        del Scene.moonray
 
-classes = [MoonRayPreferences, MoonRayConfig, MoonRayScene]
+classes = [MoonRayPreferences, MoonRayConfig, MoonRayScene, PREFERENCES_PT_moonray_addon]

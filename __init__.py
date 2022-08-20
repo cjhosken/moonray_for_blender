@@ -14,22 +14,24 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import bpy
+from bpy.types import RenderEngine
 from bpy.utils import register_class, unregister_class
 
 bl_info = {
     "name" : "MoonRay For Blender",
     "author" : "Christopher Hosken",
-    "description" : "A render engine addon which allows users to utilise Dreamwork's MoonRay Production Renderer inside of Blender",
-    "blender" : (3, 2, 1),
     "version" : (0, 0, 1),
-    "location" : "",
+    "blender" : (3, 2, 1),
+    "description" : "Dreamwork's MoonRay Production Renderer integration",
     "warning" : "This Addon is currently under development",
+    "support": "COMMUNITY",
+    "doc_url": "https://github.com/Christopher-Hosken/moonray_for_blender/wiki",
+    "tracker_url": "https://github.com/Christopher-Hosken/moonray_for_blender/issues",
     "category" : "Render"
 }
 
-class MoonRayRender(bpy.types.RenderEngine):
+class MoonRayRender(RenderEngine):
     bl_idname = "MOONRAY"
     bl_label = "MoonRay"
     bl_use_preview = True
@@ -52,11 +54,10 @@ class MoonRayRender(bpy.types.RenderEngine):
         pass
 
 from .preferences import classes as preferences_classes
-
-classes = [MoonRayRender] + preferences_classes
-
 from . import moonray_ui
 from . import moonray_nodes
+
+classes = [MoonRayRender] + preferences_classes
 
 def register():
     for cls in classes:
