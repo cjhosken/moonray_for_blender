@@ -46,5 +46,25 @@ class MoonRaySocketLight(MoonRaySocket, bpy.types.NodeSocket):
 def socket_is_equal(from_socket, to_socket):
     return (from_socket.type == to_socket.type)
 
+class MoonRaySocketDisplayFilter(MoonRaySocket, bpy.types.NodeSocket):
+    name = "MoonRaySocketDF"
+    bl_idname = "MoonRayNodeSocketDF"
+    type = "DISPLAYFILTER"
+    socket_label = "Display Filter"
+    color = (1.0, 1.0, 0.1, 1.0)
 
-classes = [MoonRaySocketBxdf,MoonRaySocketLight]
+    default_value : StringProperty("")
+
+    def draw(self, context, layout, node, text):
+        if not (self.is_hidden):
+            layout.label(text=self.socket_label)
+
+    def draw_color(self, context,node):
+        return self.color
+
+def socket_is_equal(from_socket, to_socket):
+    return (from_socket.type == to_socket.type)
+
+
+
+classes = [MoonRaySocketBxdf,MoonRaySocketLight, MoonRaySocketDisplayFilter]
