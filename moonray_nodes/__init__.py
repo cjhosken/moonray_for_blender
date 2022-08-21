@@ -4,7 +4,7 @@ from bpy.utils import register_class, unregister_class
 from . import moonray_bl_nodes_sockets
 
 from .moonray_bl_nodes_base import MoonRayShadingNode, MoonRayShaderNodeCategory, MoonRayWorldNodeCategory, MoonRayLightNodeCategory, MoonRayCompNodeCategory
-from .moonray_bl_nodes_sockets import classes as socket_classes
+from .moonray_bl_nodes_sockets import classes as socket_classes, register_sockets
 from .nodes.light import classes as light_classes
 from .nodes.shader import classes as shader_classes
 from .nodes.world import classes as world_classes
@@ -12,6 +12,8 @@ from .nodes.comp import classes as comp_classes
 
 
 __MOONRAY_NODES_ALREADY_REGISTERED__ = False
+
+register_sockets()
 
 classes = socket_classes + shader_classes + light_classes + world_classes + comp_classes
 

@@ -3,68 +3,45 @@ import re
 import time
 from bpy.props import *
 
-class MoonRaySocket:
+__MOONRAY_SOCKETS__ = [
+    # type, , name, color, default
+    ("bxdf", "Bxdf", (1.0, 1.0, 1.0, 1.0), StringProperty("")),
+    ("light", "Light", (1.0, 1.0, 1.0, 1.0), StringProperty("")),
+]
+
+class MoonRaySocket(bpy.types.NodeSocket):
     name = "MoonRaySocket"
     bl_idname = "MoonRayNodeSocket"
     type = "CUSTOM"
     color = (1.0, 1.0, 1.0, 1.0)
-    is_hidden = False
     socket_label = "None"
-
-class MoonRaySocketBxdf(MoonRaySocket, bpy.types.NodeSocket):
-    name = "MoonRaySocketBxdf"
-    bl_idname = "MoonRayNodeSocketBxdf"
-    type = "BXDF"
-    socket_label = "Bxdf"
-    color = (0.0, 1.0, 1.0, 1.0)
-
-    default_value : StringProperty("")
+    default_value = None
+    is_hidden = False
 
     def draw(self, context, layout, node, text):
         if not (self.is_hidden):
             layout.label(text=self.socket_label)
-
-    def draw_color(self, context,node):
-        return self.color
-
-class MoonRaySocketLight(MoonRaySocket, bpy.types.NodeSocket):
-    name = "MoonRaySocketLight"
-    bl_idname = "MoonRayNodeSocketLight"
-    type = "LIGHT"
-    socket_label = "Light"
-    color = (1.0, 1.0, 0.1, 1.0)
-
-    default_value : StringProperty("")
-
-    def draw(self, context, layout, node, text):
-        if not (self.is_hidden):
-            layout.label(text=self.socket_label)
-
+    
     def draw_color(self, context,node):
         return self.color
 
 def socket_is_equal(from_socket, to_socket):
     return (from_socket.type == to_socket.type)
 
-class MoonRaySocketDisplayFilter(MoonRaySocket, bpy.types.NodeSocket):
-    name = "MoonRaySocketDF"
-    bl_idname = "MoonRayNodeSocketDF"
-    type = "DISPLAYFILTER"
-    socket_label = "Display Filter"
-    color = (1.0, 1.0, 0.1, 1.0)
+classes = []
 
-    default_value : StringProperty("")
+def register_sockets():
+    for ms in __MOONRAY_SOCKETS__:
+        socket_type = ms[0]
+        socket_name = ms[1]
 
-    def draw(self, context, layout, node, text):
-        if not (self.is_hidden):
-            layout.label(text=self.socket_label)
+        socket = type(f"MoonRayNodeSocket{socket_name}", (MoonRaySocket,), {})
+        socket.name = f"MoonRaySocket{socket_name}"
+        socket.bl_idname = f"MoonRayNodeSocket{socket_name}"
+        socket.type = socket_type
+        socket.socket_label = socket_name
+        socket.color = ms[2]
 
-    def draw_color(self, context,node):
-        return self.color
+        socket.default_value : ms[3]
 
-def socket_is_equal(from_socket, to_socket):
-    return (from_socket.type == to_socket.type)
-
-
-
-classes = [MoonRaySocketBxdf,MoonRaySocketLight, MoonRaySocketDisplayFilter]
+        classes.append(socket)
