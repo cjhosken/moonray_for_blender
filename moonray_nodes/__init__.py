@@ -20,7 +20,6 @@ classes = socket_classes + shader_classes + light_classes + world_classes + comp
 __MOONRAY_NODE_CATEGORIES__ = [
     MoonRayShaderNodeCategory("MOONRAYSHADERS", "MoonRay", items=[
         NodeItem("MoonRay_ShaderOutputNode"),
-        NodeItem("MoonRay_ShaderToonDisplayFilterNode")
     ]),
     MoonRayWorldNodeCategory("MOONRAYWOLRDS", "MoonRay", items=[
         NodeItem("MoonRay_WorldOutputNode")
@@ -31,8 +30,6 @@ __MOONRAY_NODE_CATEGORIES__ = [
     ]),
     MoonRayCompNodeCategory("MOONRAYCOMP", "MoonRay", items=[   
         NodeItem("MoonRay_CompToonDisplayFilterNode"),
-        NodeItem("MoonRay_CompOpDisplayFilterNode"),
-        NodeItem("MoonRay_CompColorCorrectDisplayFilterNode")
     ]),
 ]
 

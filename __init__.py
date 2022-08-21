@@ -23,7 +23,7 @@ bl_info = {
     "author" : "Christopher Hosken",
     "version" : (0, 0, 1),
     "blender" : (3, 2, 1),
-    "description" : "Dreamwork's MoonRay Production Renderer integration",
+    "description" : "Dreamworks' MoonRay Production Renderer integration",
     "warning" : "This Addon is currently under development",
     "support": "COMMUNITY",
     "doc_url": "https://github.com/Christopher-Hosken/moonray_for_blender/wiki",
