@@ -1,5 +1,5 @@
 #  MoonRay for Blender is a render engine addon which allows users to utilise Dreamwork's MoonRay Production Renderer inside of Blender.
-#  Copyright 2022 Christopher Hosken
+#  Copyright 2024 Christopher Hosken
 # 
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -15,14 +15,14 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from bpy.types import RenderEngine
+from bpy.types import HydraRenderEngine
 from bpy.utils import register_class, unregister_class
 
 bl_info = {
     "name" : "MoonRay For Blender",
     "author" : "Christopher Hosken",
     "version" : (0, 0, 1),
-    "blender" : (3, 2, 1),
+    "blender" : (4, 1, 0),
     "description" : "Dreamworks' MoonRay Production Renderer integration",
     "warning" : "This Addon is currently under development",
     "support": "COMMUNITY",
@@ -31,12 +31,16 @@ bl_info = {
     "category" : "Render"
 }
 
-class MoonRayRender(RenderEngine):
+class MoonRayRender(HydraRenderEngine):
     bl_idname = "MOONRAY"
     bl_label = "MoonRay"
+    bl_info = "Dreamworks' MoonRay Production Renderer integration"
+
     bl_use_preview = True
-    bl_use_texture_preview = False
-    bl_use_shading_nodes_custom = False
+    bl_use_gpu_context = True
+    bl_use_materialx = True
+
+    bl_delegate_id = "HdMoonrayPlugin"
 
     def __init__(self):
         pass
@@ -54,19 +58,19 @@ class MoonRayRender(RenderEngine):
         pass
 
 from .preferences import classes as preferences_classes
-from . import moonray_ui
-from . import moonray_nodes
+from . import ui
+from . import nodes
 
 classes = [MoonRayRender] + preferences_classes
 
 def register():
     for cls in classes:
         register_class(cls)
-    moonray_ui.register()
-    moonray_nodes.register()
+    ui.register()
+    nodes.register()
 
 def unregister():
     for cls in classes:
         unregister_class(cls)
-    moonray_ui.unregister()
-    moonray_nodes.unregister()
+    ui.unregister()
+    nodes.unregister()

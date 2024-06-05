@@ -27,9 +27,9 @@ class MATERIAL_PT_moonray_preview(MoonRayPanel, bpy.types.Panel):
         if mat:
             row.template_preview(context.material, show_buttons=1)
 
-class MATERIAL_PT_moonray_shader_surface(MoonRayPanel, bpy.types.Panel):
+class MATERIAL_PT_moonray_shader(MoonRayPanel, bpy.types.Panel):
     bl_context = "material"
-    bl_label = "MoonRay Surface"
+    bl_label = "MoonRay"
     shader_type = 'Shader'
 
     def draw(self, context):
@@ -97,4 +97,4 @@ class MOONRAY_PT_context_material(MoonRayPanel, bpy.types.Panel):
             layout.template_ID(space, "pin_id")
             layout.separator()
 
-classes = [MATERIAL_PT_moonray_preview, MATERIAL_PT_moonray_shader_surface ,MOONRAY_PT_context_material]
+classes = [MATERIAL_PT_moonray_preview, MATERIAL_PT_moonray_shader ,MOONRAY_PT_context_material]

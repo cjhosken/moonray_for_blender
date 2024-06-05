@@ -25,12 +25,12 @@ class MATERIAL_PT_moonray_world_preview(MoonRayPanel, bpy.types.Panel):
             row.template_preview(wor, show_buttons=1)
 
 
-class MATERIAL_PT_moonray_world_surface(MoonRayPanel, bpy.types.Panel):
+class MATERIAL_PT_moonray_world_shader(MoonRayPanel, bpy.types.Panel):
     bl_context = "world"
-    bl_label = "MoonRay Surface"
+    bl_label = "MoonRay"
     shader_type = 'World'
 
     def draw(self, context):
         pass
 
-classes = [MATERIAL_PT_moonray_world_preview, MATERIAL_PT_moonray_world_surface]
+classes = [MATERIAL_PT_moonray_world_preview, MATERIAL_PT_moonray_world_shader]

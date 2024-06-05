@@ -16,7 +16,9 @@ If you need help, report an issue and I will try to deal with it as soon as poss
 
 ## Support
 
-* Blender 3.2.1 
+* Blender 3.4.1
+
+Currently, this addon is not linked to MoonRay, due to issues with building the render engine.
 
 
 ## Acknowledgements
@@ -31,7 +33,7 @@ This code has been modified from:
 
 ## Contact
 
-MoonRay For Blender was written by me, Christopher Hosken. If you have any concerns, ideas, or would like to help with developing this addon you can get in contact with me here.
+MoonRay For Blender is written by me, Christopher Hosken. If you have any concerns, ideas, or would like to help with developing this addon you can get in contact with me here.
 
 - [hoskenchristopher@gmail.com](https://hoskenchristopher@gmail.com)
 - [LinkedIn](https://www.linkedin.com/in/christopher-hosken/)
