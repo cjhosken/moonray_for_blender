@@ -10,7 +10,7 @@ __MOONRAY_SOCKETS__ = [
 ]
 
 class MoonRaySocket(bpy.types.NodeSocket):
-    name = "MoonRaySocket"
+    bl_label = "MoonRaySocket"
     bl_idname = "MoonRayNodeSocket"
     type = "CUSTOM"
     color = (1.0, 1.0, 1.0, 1.0)
@@ -28,20 +28,24 @@ class MoonRaySocket(bpy.types.NodeSocket):
 def socket_is_equal(from_socket, to_socket):
     return (from_socket.type == to_socket.type)
 
-classes = []
-
 def register_sockets():
+    classes = []
     for ms in __MOONRAY_SOCKETS__:
-        socket_type = ms[0]
-        socket_name = ms[1]
+        socket_type, socket_name, color, default_prop = ms
 
-        socket = type(f"MoonRayNodeSocket{socket_name}", (MoonRaySocket,), {})
-        socket.name = f"MoonRaySocket{socket_name}"
-        socket.bl_idname = f"MoonRayNodeSocket{socket_name}"
-        socket.type = socket_type
-        socket.socket_label = socket_name
-        socket.color = ms[2]
+        socket_class = type(
+            f"MoonRayNodeSocket{socket_name}",
+            (MoonRaySocket,),
+            {
+                "bl_label": f"MoonRaySocket{socket_name}",
+                "bl_idname": f"MoonRayNodeSocket{socket_name}",
+                "type": socket_type,
+                "socket_label": socket_name,
+                "color": color,
+                "default_value": default_prop,
+            }
+        )
 
-        socket.default_value : ms[3]
 
-        classes.append(socket)
+        classes.append(socket_class)
+    return classes

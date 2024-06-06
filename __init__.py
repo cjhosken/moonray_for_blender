@@ -14,10 +14,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
-from bpy.types import HydraRenderEngine
-from bpy.utils import register_class, unregister_class
-
 bl_info = {
     "name" : "MoonRay For Blender",
     "author" : "Christopher Hosken",
@@ -31,46 +27,16 @@ bl_info = {
     "category" : "Render"
 }
 
-class MoonRayRender(HydraRenderEngine):
-    bl_idname = "MOONRAY"
-    bl_label = "MoonRay"
-    bl_info = "Dreamworks' MoonRay Production Renderer integration"
-
-    bl_use_preview = True
-    bl_use_gpu_context = True
-    bl_use_materialx = True
-
-    bl_delegate_id = "HdMoonrayPlugin"
-
-    def __init__(self):
-        pass
-
-    def __del__(self):
-        pass
-
-    def render(self, depsgraph):
-        pass
-
-    def view_update(self, context, depsgraph):
-        pass
-
-    def view_draw(self, context, depsgraph):
-        pass
-
-from .preferences import classes as preferences_classes
-from . import ui
-from . import nodes
-
-classes = [MoonRayRender] + preferences_classes
+from . import engine, properties, ui, nodes
 
 def register():
-    for cls in classes:
-        register_class(cls)
+    engine.register()
+    properties.register()
     ui.register()
     nodes.register()
 
 def unregister():
-    for cls in classes:
-        unregister_class(cls)
-    ui.unregister()
     nodes.unregister()
+    ui.unregister()
+    properties.unregister()
+    engine.unregister()

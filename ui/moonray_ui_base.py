@@ -1,10 +1,13 @@
 import bpy
 
-class MoonRayPanel():
+from ..engine import MoonRayRenderEngine
+
+class MoonRayPanel(bpy.types.Panel):
     bl_label = "MoonRay Panel"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
-    COMPAT_ENGINES = ["MOONRAY"]
+    bl_context="render"
+    COMPAT_ENGINES = [MoonRayRenderEngine.bl_idname]
 
     @classmethod
     def poll(cls, context):

@@ -1,7 +1,7 @@
 import bpy
-from ...moonray_bl_nodes_base import MoonRayShadingNode
+from ...moonray_bl_nodes_base import MoonRayShaderNode
 
-class MoonRayLightOutputNode(MoonRayShadingNode):
+class MoonRayLightOutputNode(MoonRayShaderNode):
     bl_label = 'MoonRay Light Output'
     bl_idname = "MoonRay_LightOutputNode"
     renderman_node_type = 'output'

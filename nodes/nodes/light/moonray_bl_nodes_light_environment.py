@@ -1,8 +1,8 @@
 import bpy
 from bpy.props import *
-from ...moonray_bl_nodes_base import MoonRayShadingNode
+from ...moonray_bl_nodes_base import MoonRayShaderNode
 
-class MoonRayLightEnvironmentNode(MoonRayShadingNode):
+class MoonRayLightEnvironmentNode(MoonRayShaderNode):
     bl_label = 'MoonRay Env Light'
     bl_idname = "MoonRay_EnvLightNode"
     renderman_node_type = 'light'

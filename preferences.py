@@ -1,42 +1,30 @@
 import bpy
-from bpy.types import AddonPreferences, PropertyGroup, Scene
-from bpy.props import *
+from bpy.types import AddonPreferences
+from bpy.props import StringProperty
 
-class PREFERENCES_PT_moonray_addon(AddonPreferences):
-    bl_idname = __package__
+
+class MoonRayPreferences(AddonPreferences):
+    bl_idname = __name__
+
+    moonray_path: StringProperty(
+        name="MoonRay Path",
+        description="Path to the MoonRay executable",
+        subtype='FILE_PATH',
+    )
 
     def draw(self, context):
         layout = self.layout
-        col = layout.column()
-
-class MoonRayPreferences(PropertyGroup):
-    temp: BoolProperty()
-
-class MoonRayConfig(PropertyGroup):
-    
-    devices = [
-        ("CPU", "CPU", "Use CPU", 0),
-        ("GPU", "GPU", "Use GPU", 1)
-    ]
-
-    device: EnumProperty(name="Device", items=devices, default="CPU")
+        layout.label(text="MoonRay Settings")
+        layout.prop(self, "moonray_path")
 
 
-class MoonRayScene(PropertyGroup):
-    config: PointerProperty(type=MoonRayConfig)
+def register():
+    bpy.utils.register_class(MoonRayPreferences)
 
-    prefs: PointerProperty(type=MoonRayPreferences)
 
-    @classmethod
-    def register(cls):
-        Scene.moonray = PointerProperty(
-            name="MoonRay Scene Settings",
-            description="MoonRay scene settings",
-            type=cls,
-        )
+def unregister():
+    bpy.utils.unregister_class(MoonRayPreferences)
 
-    @classmethod
-    def unregister(cls):
-        del Scene.moonray
 
-classes = [MoonRayPreferences, MoonRayConfig, MoonRayScene, PREFERENCES_PT_moonray_addon]
+if __name__ == "__main__":
+    register()
