@@ -11,7 +11,27 @@ class MoonRayShaderNode_Output(MoonRayShaderNode):
     def update(self):
         pass
 
-classes = [MoonRayShaderNode_Output]
+class MoonRayShaderNode_BakeCamera(MoonRayShaderNode):
+    bl_idname = 'MoonRayShaderNode_BakeCamera'
+    bl_label = 'MoonRay Bake Camera'
+
+    def init(self, context):
+        pass
+
+    def update(self):
+        pass
+
+class MoonRayLightShaderNode_Output(MoonRayShaderNode):
+    bl_idname = 'MoonRayLightShaderNode_Output'
+    bl_label = 'MoonRay Light Output'
+
+    def init(self, context):
+        pass
+
+    def update(self):
+        pass
+
+classes = [MoonRayShaderNode_Output, MoonRayShaderNode_BakeCamera, MoonRayLightShaderNode_Output]
 
 def register():
     for cls in classes:
