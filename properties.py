@@ -1,34 +1,27 @@
 import bpy
+from bpy.props import PointerProperty, EnumProperty
 
+class MoonRaySceneProperties(bpy.types.PropertyGroup):
 
-class Properties(bpy.types.PropertyGroup):
-    type = None
+    render_device: EnumProperty(
+        name="Render Device",
+        description="",
+        items=[
+            ("0", "CPU", "CPU"),
+            ("1", "GPU", "GPU"),
+        ]
+    )
 
-    @classmethod
-    def register(cls):
-        cls.type.moonray = bpy.props.PointerProperty(
-            name="MoonRay",
-            description="MoonRay properties",
-            type=cls,
-        )
+classes = [MoonRaySceneProperties]
 
-    @classmethod
-    def unregister(cls):
-        del cls.type.moonray
+def register():
+    for cls in classes:
+        bpy.utils.register_class(cls)
 
+    bpy.types.Scene.moonray = PointerProperty(type=MoonRaySceneProperties)
 
-class MoonRayRenderProperties(bpy.types.PropertyGroup):
-    demo: bpy.props.IntProperty()
+def unregister():
+    del bpy.types.Scene.moonray
 
-
-class MoonRaySceneProperties(Properties):
-    type = bpy.types.Scene
-
-    final: bpy.props.PointerProperty(type=MoonRayRenderProperties)
-    viewport: bpy.props.PointerProperty(type=MoonRayRenderProperties)
-
-
-register, unregister = bpy.utils.register_classes_factory((
-    MoonRayRenderProperties,
-    MoonRaySceneProperties,
-))
+    for cls in reversed(classes):
+        bpy.utils.unregister_class(cls)

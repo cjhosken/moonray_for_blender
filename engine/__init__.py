@@ -17,8 +17,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
 
 
     def get_render_settings(self, engine_type):
-        settings = bpy.context.scene.moonray.viewport if engine_type == 'VIEWPORT' else \
-            bpy.context.scene.moonray.final
+        settings = bpy.context.scene.moonray
 
         result = {}
 
@@ -37,6 +36,8 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
             self.register_pass(scene, render_layer, 'Depth', 1, 'Z', 'VALUE')
     
 
-register, unregister = bpy.utils.register_classes_factory((
-    MoonRayRenderEngine,
-))
+def register():
+    bpy.utils.register_class(MoonRayRenderEngine)
+
+def unregister():
+    bpy.utils.unregister_class(MoonRayRenderEngine)

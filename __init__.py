@@ -14,6 +14,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import bpy
+
 bl_info = {
     "name" : "MoonRay For Blender",
     "author" : "Christopher Hosken",
@@ -22,21 +24,21 @@ bl_info = {
     "description" : "Dreamworks' MoonRay Production Renderer integration",
     "warning" : "This Addon is currently under development",
     "support": "COMMUNITY",
-    "doc_url": "https://github.com/Christopher-Hosken/moonray_for_blender/wiki",
+    "doc_url": "https:bl//github.com/Christopher-Hosken/moonray_for_blender/wiki",
     "tracker_url": "https://github.com/Christopher-Hosken/moonray_for_blender/issues",
     "category" : "Render"
 }
 
-from . import engine, properties, ui, nodes
+from . import properties, nodes, engine, ui
 
 def register():
-    engine.register()
     properties.register()
-    ui.register()
+    engine.register()
     nodes.register()
+    ui.register()
 
 def unregister():
-    nodes.unregister()
     ui.unregister()
-    properties.unregister()
+    nodes.unregister()
     engine.unregister()
+    properties.unregister()

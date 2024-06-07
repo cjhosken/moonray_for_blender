@@ -17,14 +17,8 @@ class MoonRayPreferences(AddonPreferences):
         layout.label(text="MoonRay Settings")
         layout.prop(self, "moonray_path")
 
-
 def register():
     bpy.utils.register_class(MoonRayPreferences)
 
-
 def unregister():
     bpy.utils.unregister_class(MoonRayPreferences)
-
-
-if __name__ == "__main__":
-    register()
