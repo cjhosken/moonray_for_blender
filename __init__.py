@@ -29,16 +29,20 @@ bl_info = {
     "category" : "Render"
 }
 
-from . import properties, nodes, engine, ui
+from . import properties, nodes, engine, ui, handlers, operators
 
 def register():
     properties.register()
     engine.register()
+    handlers.register()
+    operators.register()
     nodes.register()
     ui.register()
 
 def unregister():
     ui.unregister()
     nodes.unregister()
+    operators.unregister()
+    handlers.unregister()
     engine.unregister()
     properties.unregister()

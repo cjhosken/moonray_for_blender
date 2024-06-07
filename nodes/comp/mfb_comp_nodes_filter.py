@@ -1,9 +1,9 @@
 import bpy
-from ..mfb_nodes import MoonRayShaderNode
+from ..mfb_nodes import MoonRayCompNode
 
-class MoonRayShaderNode_Base(MoonRayShaderNode):
-    bl_idname = 'MoonRayShaderNode_Base'
-    bl_label = 'MoonRay Node'
+class MoonRayCompNode_Filter(MoonRayCompNode):
+    bl_idname = 'MoonRayCompNode_Filter'
+    bl_label = 'MoonRay Filter'
 
     def init(self, context):
         pass
@@ -12,7 +12,7 @@ class MoonRayShaderNode_Base(MoonRayShaderNode):
         pass
 
 
-classes = [MoonRayShaderNode_Base]
+classes = [MoonRayCompNode_Filter]
 
 def register():
     for cls in classes:

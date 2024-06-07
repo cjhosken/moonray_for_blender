@@ -9,3 +9,13 @@ class MoonRayShaderNode(bpy.types.ShaderNode):
 
     def update(self):
         pass
+
+class MoonRayCompNode(bpy.types.CompositorNode):
+    bl_idname = 'MoonRayCompNode'
+    bl_label = 'MoonRay Comp Node'
+
+    def init(self, context):
+        pass
+
+    def update(self):
+        pass
