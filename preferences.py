@@ -5,12 +5,6 @@ from bpy.props import *
 class MoonRayPreferences(bpy.types.AddonPreferences):
     bl_idname = "moonray_for_blender"
 
-    moonray_path: StringProperty(
-        name="MoonRay Path",
-        description="Path to the MoonRay executable",
-        subtype='FILE_PATH'
-    )
-
     def draw(self, context):
         layout = self.layout
         scene = context.scene
@@ -18,7 +12,7 @@ class MoonRayPreferences(bpy.types.AddonPreferences):
     
 
         layout.label(text="Global")
-        layout.prop(self, "moonray_path")
+        layout.prop(moonray.mfb, "hdmoonray_path")
         layout.prop(moonray.driver, "output_file")
         layout.prop(moonray.driver, "tmp_dir")
 

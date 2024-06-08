@@ -25,10 +25,13 @@ from .mfb.attributes import (
 )
 
 from .mfb.render_output import MoonRayAttributes_RenderOutput
+from .mfb import MoonRayAttributes_Mfb
 
 from .mfb.userdata import MoonRayUserData
 
 class MoonRaySceneProperties(bpy.types.PropertyGroup):
+
+    mfb: PointerProperty(type=MoonRayAttributes_Mfb)
 
     caching : PointerProperty(type=MoonRayAttributes_Caching)
     camera_and_layer: PointerProperty(type=MoonRayAttributes_CameraAndLayer)

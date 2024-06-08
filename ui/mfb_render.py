@@ -1,6 +1,7 @@
 import bpy
 
 from .mfb_panel import MOONRAY_PT_Panel
+from ..engine import MoonRayRenderEngine
 
 class MOONRAY_PT_RenderPanel(MOONRAY_PT_Panel):
     bl_label = "MoonRay"
@@ -138,10 +139,25 @@ class MOONRAY_PT_RenderFilteringPanel(MOONRAY_PT_Panel):
         
 classes = [MOONRAY_PT_RenderPanel, MOONRAY_PT_RenderSettingsPanel, MOONRAY_PT_RenderGlobalsPanel, MOONRAY_PT_RenderSamplesPanel, MOONRAY_PT_RenderVolumePanel, MOONRAY_PT_RenderFilteringPanel]
 
+
+
+
+def render_header_draw(self, context):
+    if context.scene.render.engine == MoonRayRenderEngine.bl_idname:
+        layout = self.layout
+        scene = context.scene
+        moonray = scene.moonray
+        
+        self.layout.prop(moonray.mfb, "execution_mode")
+
 def register():
+    bpy.types.RENDER_PT_context.append(render_header_draw)
+
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
+    bpy.types.RENDER_PT_context.remove(render_header_draw)
+
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
