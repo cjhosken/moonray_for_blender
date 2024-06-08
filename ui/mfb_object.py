@@ -12,7 +12,6 @@ class MOONRAY_PT_ObjectPanel(MOONRAY_PT_Panel):
 
     @classmethod
     def poll(cls, context):
-        # Check if the active object is a mesh
         return super().poll(context) and context.object and context.object.type != 'LIGHT'
 
     def draw(self, context):
@@ -29,8 +28,6 @@ class MOONRAY_PT_ObjectPanel(MOONRAY_PT_Panel):
         layout.prop(obj.moonray, "shadowreceiver_set_input", text="Shadow Receiver Sets")
         layout.prop(obj.moonray, "trace_set_input", text="Trace Sets")
 
-        # Light set implementation
-        # Is Light
 
 classes = [MOONRAY_PT_ObjectPanel]
 
