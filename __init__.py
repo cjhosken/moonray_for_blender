@@ -29,11 +29,12 @@ bl_info = {
     "category" : "Render"
 }
 
-from . import properties, nodes, engine, ui, handlers, operators, mfb
+from . import properties, nodes, engine, ui, handlers, operators, mfb, preferences
 
 def register():
     mfb.register()
     properties.register()
+    preferences.register()
     engine.register()
     handlers.register()
     operators.register()
@@ -46,5 +47,6 @@ def unregister():
     operators.unregister()
     handlers.unregister()
     engine.unregister()
+    preferences.unregister()
     properties.unregister()
     mfb.unregister()

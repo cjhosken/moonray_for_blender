@@ -22,11 +22,15 @@ class MOONRAY_PT_ViewLayerPanel(MOONRAY_PT_Panel):
 
     def draw(self, context):
         layout = self.layout
+        scene = context.scene
+        moonray = scene.moonray
 
         layout.use_property_split = True
         layout.use_property_decorate = False
 
-        view_layer = context.view_layer
+        layout.prop(moonray.output, "denoise")
+        layout.prop(moonray.output, "denoiser_input")
+        layout.prop(moonray.output, "display_filter")
 
 class MOONRAY_MT_ViewLayer_SetsPanel(MOONRAY_PT_Panel):
     bl_label = "Sets"
@@ -40,6 +44,33 @@ class MOONRAY_MT_ViewLayer_SetsPanel(MOONRAY_PT_Panel):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+
+class MOONRAY_MT_ViewLayer_CryptomattePanel(MOONRAY_PT_Panel):
+    bl_label = "Cryptomattes"
+    bl_idname = "MOONRAY_PT_ViewLayer_CryptomattePanel"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "view_layer"
+    bl_parent_id = "MOONRAY_PT_ViewLayerPanel"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        moonray = scene.moonray
+
+        layout.use_property_split = True
+        layout.use_property_decorate = False
+        
+        layout.prop(moonray.output, "cryptomatte_depth")
+        layout.prop(moonray.output, "cryptomatte_enable_refract")
+        layout.prop(moonray.output, "cryptomatte_output_beauty")
+        layout.prop(moonray.output, "cryptomatte_output_normals")
+        layout.prop(moonray.output, "cryptomatte_output_p0")
+        layout.prop(moonray.output, "cryptomatte_output_positions")
+        layout.prop(moonray.output, "cryptomatte_output_refn")
+        layout.prop(moonray.output, "cryptomatte_output_refp")
+        layout.prop(moonray.output, "cryptomatte_output_uv")
+        layout.prop(moonray.output, "cryptomatte_support_resume_render")
 
 
 
@@ -156,7 +187,7 @@ class MOONRAY_MT_ViewLayer_TraceSetsPanel(MOONRAY_PT_Panel):
         sub.separator()
 
 
-classes = [MOONRAY_UL_SetList, MOONRAY_PT_ViewLayerPanel, MOONRAY_MT_ViewLayer_SetsPanel, MOONRAY_MT_ViewLayer_LightSetsPanel, MOONRAY_MT_ViewLayer_ShadowSetsPanel, MOONRAY_MT_ViewLayer_TraceSetsPanel]
+classes = [MOONRAY_UL_SetList, MOONRAY_PT_ViewLayerPanel, MOONRAY_MT_ViewLayer_SetsPanel, MOONRAY_MT_ViewLayer_LightSetsPanel, MOONRAY_MT_ViewLayer_ShadowSetsPanel, MOONRAY_MT_ViewLayer_TraceSetsPanel, MOONRAY_MT_ViewLayer_CryptomattePanel]
 
 def register():
     for cls in classes:

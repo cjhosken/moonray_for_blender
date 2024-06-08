@@ -2,7 +2,7 @@ import bpy
 from bpy.props import *
 from bpy.types import *
 
-class MoonRayAttribute(bpy.types.PropertyGroup):
+class MoonRayUserData(bpy.types.PropertyGroup):
     name: StringProperty()
     type: EnumProperty(
         items=[
@@ -26,7 +26,7 @@ class MoonRayAttribute(bpy.types.PropertyGroup):
     value_vec2f: FloatVectorProperty(size=2, default=(0.0, 0.0))
     value_vec3f: FloatVectorProperty(size=3, default=(0.0, 0.0, 0.0))
 
-classes = [MoonRayAttribute]
+classes = [MoonRayUserData]
 
 def register():
     for cls in classes:

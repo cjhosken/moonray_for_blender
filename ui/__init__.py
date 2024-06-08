@@ -7,19 +7,26 @@ from . import mfb_light
 from . import mfb_object
 from . import mfb_view_layer
 from . import mfb_render
+from . import mfb_output
+from . import mfb_menus
 
 def get_panels():
     # Follow the Cycles model of excluding panels we don't want.
     exclude_panels = {
-        'RENDER_PT_stamp',
         'DATA_PT_light',
         'DATA_PT_spot',
         'NODE_DATA_PT_light',
         'DATA_PT_falloff_curve',
+        'SCENE_PT_audio',
+
+
+        'RENDER_PT_stamp',
         'RENDER_PT_post_processing',
         'RENDER_PT_simplify',
-        'SCENE_PT_audio',
-        'RENDER_PT_freestyle'
+        'RENDER_PT_freestyle',
+        'RENDER_PT_output',
+        'RENDER_PT_stereoscopy',
+        'RENDER_PT_time_stretching'
     }
     include_eevee_panels = {
         'MATERIAL_PT_preview',
@@ -38,6 +45,8 @@ def get_panels():
             yield panel_cls
 
 def register():
+    mfb_output.register()
+    mfb_menus.register()
     mfb_node_menus.register()
     mfb_light.register()
     mfb_object.register()
@@ -48,6 +57,8 @@ def register():
         panel_cls.COMPAT_ENGINES.add(MoonRayRenderEngine.bl_idname)
 
 def unregister():
+    mfb_output.unregister()
+    mfb_menus.unregister()
     mfb_node_menus.unregister()
     mfb_light.unregister()
     mfb_object.unregister()

@@ -12,7 +12,7 @@ class MOONRAY_PT_RenderPanel(MOONRAY_PT_Panel):
     def draw(self, context):
         layout = self.layout
 
-class MOONRAY_PT_RenderSettingsPanel(bpy.types.Panel):
+class MOONRAY_PT_RenderSettingsPanel(MOONRAY_PT_Panel):
     bl_label = "Render Settings"
     bl_idname = "MOONRAY_PT_RenderSettingsPanel"
     bl_space_type = 'PROPERTIES'
@@ -25,159 +25,118 @@ class MOONRAY_PT_RenderSettingsPanel(bpy.types.Panel):
         scene = context.scene
         moonray = scene.moonray
 
-        layout.prop(moonray, "render_device")
-        layout.prop(moonray, "fast_geometry_update")
-        layout.prop(moonray, "texture_cache_size")
-        layout.prop(moonray, "texture_file_handles")
+        layout.prop(moonray.path_guide, "path_guide_enable")
 
-        # motion_steps
+class MOONRAY_PT_RenderGlobalsPanel(MOONRAY_PT_Panel):
+    bl_label = "Render Globals"
+    bl_idname = "MOONRAY_PT_RenderGlobalsPanel"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "render"
+    bl_parent_id = "MOONRAY_PT_RenderSettingsPanel"
 
-class MOONRAY_PT_RenderSamplesPanel(bpy.types.Panel):
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        moonray = scene.moonray
+
+        layout.prop(moonray.global_toggles, "enable_displacement")
+        layout.prop(moonray.global_toggles, "enable_dof")
+        layout.prop(moonray.global_toggles, "enable_max_geometry_resolution")
+        layout.prop(moonray.global_toggles, "enable_motion_blur")
+        layout.prop(moonray.global_toggles, "enable_presence_shadows")
+        layout.prop(moonray.global_toggles, "enable_shadowing")
+        layout.prop(moonray.global_toggles, "enable_subsurface_scattering")
+        layout.prop(moonray.global_toggles, "lights_visible_in_camera")
+        layout.prop(moonray.global_toggles, "max_geometry_resolution")
+        layout.prop(moonray.global_toggles, "propagate_visibility_bounce_type")
+        layout.prop(moonray.global_toggles, "shadow_terminator_fix")
+
+
+class MOONRAY_PT_RenderSamplesPanel(MOONRAY_PT_Panel):
     bl_label = "Render Samples"
     bl_idname = "MOONRAY_PT_RenderSamplesPanel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "render"
-    bl_parent_id = "MOONRAY_PT_RenderPanel"
+    bl_parent_id = "MOONRAY_PT_RenderSettingsPanel"
 
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         moonray = scene.moonray
 
-        # path_guide_enable
-        # bsdf_samples
-        # bssrdf_samples
+        layout.use_property_split = True
+        layout.use_property_decorate = False
 
-        #disable optimized hair sampling
-        # light samples
-        # lock_frame_noise
+        layout.prop(moonray.sampling, "bsdf_samples")
+        layout.prop(moonray.sampling, "bssrdf_samples")
+        layout.prop(moonray.sampling, "disable_optimized_hair_sampling")
+        layout.prop(moonray.sampling, "light_samples")
+        layout.prop(moonray.sampling, "lock_frame_noise")
+        layout.prop(moonray.sampling, "max_depth")
+        layout.prop(moonray.sampling, "max_diffuse_depth")
+        layout.prop(moonray.sampling, "max_glossy_depth")
+        layout.prop(moonray.sampling, "max_hair_depth")
+        layout.prop(moonray.sampling, "max_presence_depth")
+        layout.prop(moonray.sampling, "max_subsurface_per_path")
+        layout.prop(moonray.sampling, "pixel_samples")
+        layout.prop(moonray.sampling, "presence_threshold")
+        layout.prop(moonray.sampling, "russian_roulette_threshold")
+        layout.prop(moonray.sampling, "transparency_threshold")
 
-        # max_depth
-        # max_diffuse_depth
-        # max_glossy_depth
-        # max_hair_depth
-        # max_mirror_depth
-        # max_presence_depth
-        # max_subsurface_per_path
-        # pixel-samples
-        # presence threshold
-        # russian_rouleete_threshold
-        # transparency threshold
-
-        # max volume depth
-        # volume attenuation factor
-        # volume contribution_factor
-        # volume illumination samples
-        # volume_opacity_threshold
-        # volume overlap mode
-        # volume_phase_attenuation_factor
-        # volume_quality
-        #volume_shadow_quality
-
-        # light_sampling_mode
-        # light_sampling_quality
-        
-        # max_adaptive_samples
-        # min_adaptive_samples
-
-        # sampling_mode
-
-
-        # batch_tile_order
-        # checkpoint_tile_order
-        # progressive_tile_order
-
-
-class MOONRAY_PT_RenderGlobalsPanel(bpy.types.Panel):
-    bl_label = "Globals"
-    bl_idname = "MOONRAY_PT_RenderGlobalsPanel"
+class MOONRAY_PT_RenderVolumePanel(MOONRAY_PT_Panel):
+    bl_label = "Volume"
+    bl_idname = "MOONRAY_PT_RenderVolumePanel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "render"
-    bl_parent_id = "MOONRAY_PT_RenderPanel"
+    bl_parent_id = "MOONRAY_PT_RenderSamplesPanel"
 
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         moonray = scene.moonray
 
-        # enable_displacement
-        # enable_dof
-        # enable_motion_blur
-        # enable_max_geo_resolution
-        # enable_presence_shadows
-        # enable_shadowing
-        # enable_subsurface_scattering
-        # lights_visible_in_ca,mera
-        # max_geometry_resolution
-        # propagate_visiblity_bounce_type
-        # shadow_terminator_fix
+        layout.use_property_split = True
+        layout.use_property_decorate = False
 
-        # dicing camera
+        layout.prop(moonray.volumes, "max_volume_depth")
+        layout.prop(moonray.volumes, "volume_attenuation_factor")
+        layout.prop(moonray.volumes, "volume_contribution_factor")
+        layout.prop(moonray.volumes, "volume_illumination_samples")
+        layout.prop(moonray.volumes, "volume_opacity_threshold")
+        layout.prop(moonray.volumes, "volume_overlap_mode")
+        layout.prop(moonray.volumes, "volume_phase_attenuation_factor")
+        layout.prop(moonray.volumes, "volume_quality")
+        layout.prop(moonray.volumes, "volume_shadow_quality")
 
-
-
-class MOONRAY_PT_RenderDebugPanel(bpy.types.Panel):
-    bl_label = "Debug"
-    bl_idname = "MOONRAY_PT_RenderDebugPanel"
-    bl_space_type = 'PROPERTIES'
-    bl_region_type = 'WINDOW'
-    bl_context = "render"
-    bl_parent_id = "MOONRAY_PT_RenderPanel"
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        moonray = scene.moonray
-
-        # debug console
-        # debug pixel
-        # validate geometry
-
-        # athena debug
-        # fatal_color
-        #log_debug
-        #log_info
-        #stats_file
-
-
-
-        layout.prop(moonray, "render_device")
-        layout.prop(moonray, "fast_geometry_update")
-        layout.prop(moonray, "texture_cache_size")
-        layout.prop(moonray, "texture_file_handles")
-
-class MOONRAY_PT_RenderFilteringPanel(bpy.types.Panel):
+class MOONRAY_PT_RenderFilteringPanel(MOONRAY_PT_Panel):
     bl_label = "Filtering"
     bl_idname = "MOONRAY_PT_RenderFilteringPanel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "render"
-    bl_parent_id = "MOONRAY_PT_RenderPanel"
+    bl_parent_id = "MOONRAY_PT_RenderSamplesPanel"
 
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         moonray = scene.moonray
 
-        # pixel_filter
-        # pixel_filter_width
-        # texture_blur
+        layout.use_property_split = True
+        layout.use_property_decorate = False
 
-        # roughness clamping
-        # sample clamping depth
-        # sample clamping value
+        layout.prop(moonray.fireflies_removal, "roughness_clamping_factor")
+        layout.prop(moonray.fireflies_removal, "sample_clamping_depth")
+        layout.prop(moonray.fireflies_removal, "sample_clamping_value")
 
-        
-
-        layout.prop(moonray, "render_device")
-        layout.prop(moonray, "fast_geometry_update")
-        layout.prop(moonray, "texture_cache_size")
-        layout.prop(moonray, "texture_file_handles")
+        layout.prop(moonray.filtering, "pixel_filter")
+        layout.prop(moonray.filtering, "pixel_filter_width")
+        layout.prop(moonray.filtering, "texture_blur")
 
         
-classes = [MOONRAY_PT_RenderPanel, MOONRAY_PT_RenderSettingsPanel]
+classes = [MOONRAY_PT_RenderPanel, MOONRAY_PT_RenderSettingsPanel, MOONRAY_PT_RenderGlobalsPanel, MOONRAY_PT_RenderSamplesPanel, MOONRAY_PT_RenderVolumePanel, MOONRAY_PT_RenderFilteringPanel]
 
 def register():
     for cls in classes:

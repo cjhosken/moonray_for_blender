@@ -2,23 +2,56 @@ import bpy
 from bpy.props import *
 
 from .mfb.sets import MoonRayLightSets, MoonRayLightFilterSets, MoonRayShadowSets, MoonRayShadowReceiverSets, MoonRayTraceSets
-from .mfb.attribute import MoonRayAttribute
+from .mfb.attributes import (
+    MoonRayAttributes_Caching, 
+    MoonRayAttributes_CameraAndLayer, 
+    MoonRayAttributes_Checkpoint, 
+    MoonRayAttributes_Debug, 
+    MoonRayAttributes_DeepImages, 
+    MoonRayAttributes_Driver, 
+    MoonRayAttributes_Filtering, 
+    MoonRayAttributes_FirefliesRemoval, 
+    MoonRayAttributes_Frame,  
+    MoonRayAttributes_GlobalToggles, 
+    MoonRayAttributes_ImageSize, 
+    MoonRayAttributes_Logging, 
+    MoonRayAttributes_MetaData, 
+    MoonRayAttributes_MotionAndScale, 
+    MoonRayAttributes_PathGuide, 
+    MoonRayAttributes_ResumeRender, 
+    MoonRayAttributes_Sampling, 
+    MoonRayAttributes_Volumes, 
+    MoonRayAttributes_General
+)
+
+from .mfb.render_output import MoonRayAttributes_RenderOutput
+
+from .mfb.userdata import MoonRayUserData
 
 class MoonRaySceneProperties(bpy.types.PropertyGroup):
 
-    render_device: EnumProperty(
-        name="Render Device",
-        description="",
-        items=[
-            ("0", "CPU", "CPU"),
-            ("1", "GPU", "GPU"),
-        ]
-    )
+    caching : PointerProperty(type=MoonRayAttributes_Caching)
+    camera_and_layer: PointerProperty(type=MoonRayAttributes_CameraAndLayer)
+    checkpoint: PointerProperty(type=MoonRayAttributes_Checkpoint)
+    debug: PointerProperty(type=MoonRayAttributes_Debug)
+    deep_images: PointerProperty(type=MoonRayAttributes_DeepImages)
+    driver: PointerProperty(type=MoonRayAttributes_Driver)
+    filtering: PointerProperty(type=MoonRayAttributes_Filtering)
+    fireflies_removal: PointerProperty(type=MoonRayAttributes_FirefliesRemoval)
+    frame: PointerProperty(type=MoonRayAttributes_Frame)
+    global_toggles: PointerProperty(type=MoonRayAttributes_GlobalToggles)
+    image_size: PointerProperty(type=MoonRayAttributes_ImageSize)
+    logging: PointerProperty(type=MoonRayAttributes_Logging)
+    metadata: PointerProperty(type=MoonRayAttributes_MetaData)
+    motion_and_scale: PointerProperty(type=MoonRayAttributes_MotionAndScale)
+    path_guide: PointerProperty(type=MoonRayAttributes_PathGuide)
+    resume_render: PointerProperty(type=MoonRayAttributes_ResumeRender)
+    sampling: PointerProperty(type=MoonRayAttributes_Sampling)
+    volumes: PointerProperty(type=MoonRayAttributes_Volumes)
+    general: PointerProperty(type=MoonRayAttributes_General)
 
-    fast_geometry_update : BoolProperty(name="Fast Geo Updaate")
-    
-    texture_cache_size : IntProperty(name="Texture Cache Size")
-    texture_file_handles : IntProperty(name="Texture fIle Handles")
+
+    output:PointerProperty(type=MoonRayAttributes_RenderOutput)
 
     light_sets: PointerProperty(type=MoonRayLightSets)
     lightfilter_sets: PointerProperty(type=MoonRayLightFilterSets)
@@ -58,7 +91,7 @@ class MoonRayObjectProperties(bpy.types.PropertyGroup):
     trace_set_input: StringProperty(name="Trace Set")
     shadowreceiver_set_input: StringProperty(name="Shadow Receiver Set")
 
-    user_data : CollectionProperty(type=MoonRayAttribute)
+    user_data : CollectionProperty(type=MoonRayUserData)
 
 classes = [MoonRaySceneProperties, MoonRayLightProperties, MoonRayObjectProperties]
 
@@ -69,7 +102,6 @@ def register():
     bpy.types.Scene.moonray = PointerProperty(type=MoonRaySceneProperties)
     bpy.types.Light.moonray = PointerProperty(type=MoonRayLightProperties)
     bpy.types.Object.moonray = PointerProperty(type=MoonRayObjectProperties)
-
 
 def unregister():
     del bpy.types.Scene.moonray

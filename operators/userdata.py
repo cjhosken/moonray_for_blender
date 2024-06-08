@@ -1,14 +1,14 @@
 import bpy
 from bpy.props import *
 
-from ..mfb.attribute import MoonRayAttribute
+from ..mfb.userdata import MoonRayUserData
 
 class MOONRAY_OT_AddUserData(bpy.types.Operator):
     bl_idname = "moonray.add_userdata"
-    bl_label = "Add Custom Attribute"
-    bl_description = "Add a custom attribute"
+    bl_label = "Add User Data"
+    bl_description = "Add a custom userdata attribute"
 
-    attribute: PointerProperty(type=MoonRayAttribute)
+    attribute: PointerProperty(type=MoonRayUserData)
     
     def execute(self, context):
         user_data = context.object.moonray.user_data

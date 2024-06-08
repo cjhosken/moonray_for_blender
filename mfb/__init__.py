@@ -1,11 +1,22 @@
 from . import sets
-from . import attribute
-
+from . import userdata
+from . import deep
+from . import meta
+from . import attributes
+from . import render_output
 
 def register():
-    attribute.register()
+    meta.register()
+    deep.register()
+    attributes.register()
+    render_output.register()
+    userdata.register()
     sets.register()
 
 def unregister():
-    attribute.unregister()
+    userdata.unregister()
     sets.unregister()
+    render_output.unregister()
+    attributes.unregister()
+    deep.unregister()
+    meta.unregister()
