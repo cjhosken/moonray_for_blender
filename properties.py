@@ -2,6 +2,7 @@ import bpy
 from bpy.props import *
 
 from .mfb.sets import MoonRayLightSets, MoonRayLightFilterSets, MoonRayShadowSets, MoonRayShadowReceiverSets, MoonRayTraceSets
+from .mfb.attribute import MoonRayAttribute
 
 class MoonRaySceneProperties(bpy.types.PropertyGroup):
 
@@ -53,10 +54,11 @@ class MoonRayObjectProperties(bpy.types.PropertyGroup):
 
     light_set: StringProperty(name="Light Set")
     shadow_set: StringProperty(name="Shadow Set")
-    shadow_receiver_set: StringProperty(name="Shadow Receiver Set")
+    shadowreceiver_set: StringProperty(name="Shadow Receiver Set")
     trace_set_input: StringProperty(name="Trace Set")
     shadowreceiver_set_input: StringProperty(name="Shadow Receiver Set")
 
+    user_data : CollectionProperty(type=MoonRayAttribute)
 
 classes = [MoonRaySceneProperties, MoonRayLightProperties, MoonRayObjectProperties]
 
