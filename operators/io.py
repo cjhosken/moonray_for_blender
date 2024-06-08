@@ -2,8 +2,8 @@ import bpy
 from bpy.props import *
 
 class MOONRAY_OT_ImportRDL(bpy.types.Operator):
-    bl_idname = "moonray.import_rdl2"
-    bl_label = "Dreamworks MoonRay (.rdl2)"
+    bl_idname = "moonray.import_rdl"
+    bl_label = "Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
     
     filepath: StringProperty(subtype="FILE_PATH")
     
@@ -18,8 +18,8 @@ class MOONRAY_OT_ImportRDL(bpy.types.Operator):
 
 # Define the export operator
 class MOONRAY_OT_ExportRDL(bpy.types.Operator):
-    bl_idname = "moonray.export_rdl2"
-    bl_label = "Dreamworks MoonRay (.rdl2)"
+    bl_idname = "moonray.export_rdl"
+    bl_label = "Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
     
     filepath: StringProperty(subtype="FILE_PATH")
     

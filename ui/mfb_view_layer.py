@@ -72,6 +72,22 @@ class MOONRAY_MT_ViewLayer_CryptomattePanel(MOONRAY_PT_Panel):
         layout.prop(moonray.output, "cryptomatte_output_uv")
         layout.prop(moonray.output, "cryptomatte_support_resume_render")
 
+class MOONRAY_MT_ViewLayer_LightFilterPanel(MOONRAY_PT_Panel):
+    bl_label = "Light Filters"
+    bl_idname = "MOONRAY_PT_ViewLayer_LightFilterPanel"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "view_layer"
+    bl_parent_id = "MOONRAY_PT_ViewLayerPanel"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        moonray = scene.moonray
+
+        layout.use_property_split = True
+        layout.use_property_decorate = False
+
 
 
 class MOONRAY_MT_ViewLayer_LightSetsPanel(MOONRAY_PT_Panel):
@@ -187,7 +203,7 @@ class MOONRAY_MT_ViewLayer_TraceSetsPanel(MOONRAY_PT_Panel):
         sub.separator()
 
 
-classes = [MOONRAY_UL_SetList, MOONRAY_PT_ViewLayerPanel, MOONRAY_MT_ViewLayer_SetsPanel, MOONRAY_MT_ViewLayer_LightSetsPanel, MOONRAY_MT_ViewLayer_ShadowSetsPanel, MOONRAY_MT_ViewLayer_TraceSetsPanel, MOONRAY_MT_ViewLayer_CryptomattePanel]
+classes = [MOONRAY_UL_SetList, MOONRAY_PT_ViewLayerPanel, MOONRAY_MT_ViewLayer_SetsPanel, MOONRAY_MT_ViewLayer_LightSetsPanel, MOONRAY_MT_ViewLayer_ShadowSetsPanel, MOONRAY_MT_ViewLayer_TraceSetsPanel, MOONRAY_MT_ViewLayer_CryptomattePanel, MOONRAY_MT_ViewLayer_LightFilterPanel]
 
 def register():
     for cls in classes:
