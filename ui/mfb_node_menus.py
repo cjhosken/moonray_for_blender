@@ -54,20 +54,15 @@ class MoonRayShaderNodeMenu_Map(bpy.types.Menu):
 
     def draw(self, context):
         layout = self.layout
+        layout.menu("NODE_MT_shader_node_add_moonray_map_usd", text="Usd")
+        layout.menu("NODE_MT_shader_node_add_moonray_map_color", text="Color")
         layout.operator("node.add_moonray_node", text="Attribute").type = 'MoonRayShaderNode_Map_Attribute'
         layout.operator("node.add_moonray_node", text="Debug").type = 'MoonRayShaderNode_Map_Debug'
         layout.operator("node.add_moonray_node", text="List").type = 'MoonRayShaderNode_Map_List'
-        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_float2").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_float2'
-        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_point").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_point'
-        layout.operator("node.add_moonray_node", text="UsdUVTexture").type = 'MoonRayShaderNode_Map_UsdUVTexture'
         layout.operator("node.add_moonray_node", text="Checkerboard").type = 'MoonRayShaderNode_Map_Checkerboard'
         layout.operator("node.add_moonray_node", text="ExtraAov").type = 'MoonRayShaderNode_Map_ExtraAov'
         layout.operator("node.add_moonray_node", text="OpenVdb").type = 'MoonRayShaderNode_Map_OpenVdb'
-        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_float3").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_float3'
-        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_vector").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_vector'
         layout.operator("node.add_moonray_node", text="Image").type = 'MoonRayShaderNode_Map_Image'
-        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_float").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_float'
-        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_int").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_int'
         layout.operator("node.add_moonray_node", text="UsdTransform2d").type = 'MoonRayShaderNode_Map_UsdTransform2d'
         layout.operator("node.add_moonray_node", text="AxisAngle").type = 'MoonRayShaderNode_Map_AxisAngle'
         layout.operator("node.add_moonray_node", text="ColorCorrectLegacy").type = 'MoonRayShaderNode_Map_ColorCorrectLegacy'
@@ -121,6 +116,27 @@ class MoonRayShaderNodeMenu_Map(bpy.types.Menu):
         layout.operator("node.add_moonray_node", text="LcToRgb").type = 'MoonRayShaderNode_Map_LcToRgb'
         layout.operator("node.add_moonray_node", text="ProjectPlanar").type = 'MoonRayShaderNode_Map_ProjectPlanar'
         layout.operator("node.add_moonray_node", text="RgbToLab").type = 'MoonRayShaderNode_Map_RgbToLab'
+
+class MoonRayShaderNodeMenu_Map_USD(bpy.types.Menu):
+    bl_idname = "NODE_MT_shader_node_add_moonray_map_usd"
+    bl_label = "Add MoonRay Node"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_float2").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_float2'
+        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_point").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_point'
+        layout.operator("node.add_moonray_node", text="UsdUVTexture").type = 'MoonRayShaderNode_Map_UsdUVTexture'
+        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_float3").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_float3'
+        layout.operator("node.add_moonray_node", text="UsdPrimvarReader_vector").type = 'MoonRayShaderNode_Map_UsdPrimvarReader_vector'
+
+class MoonRayShaderNodeMenu_Map_Color(bpy.types.Menu):
+    bl_idname = "NODE_MT_shader_node_add_moonray_map_color"
+    bl_label = "Add MoonRay Node"
+
+    def draw(self, context):
+        layout = self.layout
+
+
 
 class MoonRayShaderNodeMenu_Displacement(bpy.types.Menu):
     bl_idname = "NODE_MT_shader_node_add_moonray_disp"
@@ -197,6 +213,32 @@ class MoonRayLightShaderNodeMenu_Output(bpy.types.Menu):
         layout = self.layout
         layout.operator("node.add_moonray_node", text="MoonRay Light Output").type = 'MoonRayLightShaderNode_Output'
 
+# World Nodes
+class MoonRayWorldShaderNodeMenu(bpy.types.Menu):
+    bl_idname = "NODE_MT_worldshader_node_add_moonray"
+    bl_label = "Add MoonRay Node"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.menu("NODE_MT_worldshader_node_add_moonray_light", text="Light")
+        layout.menu("NODE_MT_worldshader_node_add_moonray_output", text="Output")
+
+class MoonRayWorldShaderNodeMenu_Light(bpy.types.Menu):
+    bl_idname = "NODE_MT_worldshader_node_add_moonray_output"
+    bl_label = "Add MoonRay Node"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("node.add_moonray_node", text="MoonRay World Output").type = 'MoonRayWorldShaderNode_Output'
+
+class MoonRayWorldShaderNodeMenu_Output(bpy.types.Menu):
+    bl_idname = "NODE_MT_worldshader_node_add_moonray_output"
+    bl_label = "Add MoonRay Node"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("node.add_moonray_node", text="MoonRay World Output").type = 'MoonRayWorldShaderNode_Output'
+
 # Compositor Nodes
 
 class MoonRayCompNodeMenu(bpy.types.Menu):
@@ -233,18 +275,25 @@ class MoonRayCompNodeMenu_DisplayFilter(bpy.types.Menu):
         layout.operator("node.add_moonray_node", text="Toon Display Filter").type = 'MoonRayCompNode_ToonDisplayFilter'
 
 
-classes = [MoonRayShaderNodeMenu_Shader, MoonRayShaderNodeMenu_Map, MoonRayShaderNodeMenu_Output, MoonRayShaderNodeMenu_Displacement, MoonRayShaderNodeMenu_Normal, MoonRayShaderNodeMenu,
-           MoonRayCompNodeMenu, MoonRayCompNodeMenu_DisplayFilter, MoonRayLightShaderNodeMenu, MoonRayLightShaderNodeMenu_LightFilter, MoonRayLightShaderNodeMenu_Output
+classes = [MoonRayShaderNodeMenu_Shader, MoonRayShaderNodeMenu_Map, MoonRayShaderNodeMenu_Map_USD, MoonRayShaderNodeMenu_Map_Color,
+           MoonRayShaderNodeMenu_Output, MoonRayShaderNodeMenu_Displacement, MoonRayShaderNodeMenu_Normal, MoonRayShaderNodeMenu,
+           MoonRayCompNodeMenu, MoonRayCompNodeMenu_DisplayFilter, MoonRayLightShaderNodeMenu, MoonRayLightShaderNodeMenu_LightFilter, MoonRayLightShaderNodeMenu_Output,
+           MoonRayWorldShaderNodeMenu, MoonRayWorldShaderNodeMenu_Output
            ]
 
 def shader_menu_draw(self, context):
     if context.scene.render.engine == MoonRayRenderEngine.bl_idname:
         layout = self.layout
-        
-        if context.active_object and context.active_object.type == 'LIGHT':
-            layout.menu("NODE_MT_lightshader_node_add_moonray", text="MoonRay")
-        else:
-            layout.menu("NODE_MT_shader_node_add_moonray", text="MoonRay")
+        space = context.space_data
+
+        if space.type == 'NODE_EDITOR':
+            if space.tree_type == 'ShaderNodeTree':
+                    if context.active_object and context.active_object.type == 'LIGHT':
+                        layout.menu("NODE_MT_lightshader_node_add_moonray", text="MoonRay")
+                    else:
+                        layout.menu("NODE_MT_shader_node_add_moonray", text="MoonRay")
+            elif space.tree_type == 'WorldNodeTree':
+                layout.menu("NODE_MT_world_node_add_moonray", text="MoonRay")
 
 def comp_menu_draw(self, context):
     if context.scene.render.engine == MoonRayRenderEngine.bl_idname:

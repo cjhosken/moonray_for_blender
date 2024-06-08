@@ -1,5 +1,7 @@
 import bpy
-from bpy.props import PointerProperty, EnumProperty
+from bpy.props import *
+
+from .mfb.sets import MoonRayLightSets, MoonRayLightFilterSets, MoonRayShadowSets, MoonRayShadowReceiverSets, MoonRayTraceSets
 
 class MoonRaySceneProperties(bpy.types.PropertyGroup):
 
@@ -12,16 +14,61 @@ class MoonRaySceneProperties(bpy.types.PropertyGroup):
         ]
     )
 
-classes = [MoonRaySceneProperties]
+    fast_geometry_update : BoolProperty(name="Fast Geo Updaate")
+    
+    texture_cache_size : IntProperty(name="Texture Cache Size")
+    texture_file_handles : IntProperty(name="Texture fIle Handles")
+
+    light_sets: PointerProperty(type=MoonRayLightSets)
+    lightfilter_sets: PointerProperty(type=MoonRayLightFilterSets)
+    shadow_sets: PointerProperty(type=MoonRayShadowSets)
+    shadowreceiver_sets: PointerProperty(type=MoonRayShadowReceiverSets)
+    trace_sets: PointerProperty(type=MoonRayTraceSets)
+
+class MoonRayLightProperties(bpy.types.PropertyGroup):
+    visible : BoolProperty(name="Visible")
+    motion_blur : BoolProperty(name="Motion Blur")
+    texture : StringProperty(name="Texture", subtype="FILE_PATH")
+
+    type : EnumProperty(
+        name="Light Type",
+        description="Choose a light type",
+        items=[
+            ('CYLINDER', 'Cylinder', ''),
+            ('DISK', 'Disk', ''),
+            ('DISTANT', 'Distant', ''),
+            ('ENV', 'Environment', ''),
+            ('RECT', 'Rect', ''),
+            ('SPHERE', 'Sphere', ''),
+            ('SPOT', 'Spot', '')
+        ]
+    )
+
+    lightfilter_set: StringProperty(name="Light Filter Set")
+
+class MoonRayObjectProperties(bpy.types.PropertyGroup):
+    is_light : BoolProperty(name="Is Light Source")
+
+    trace_set: StringProperty(name="Trace Set")
+    shadow_set: StringProperty(name="Shadow Set")
+    shadowreceiver_set: StringProperty(name="Shadow Receiver Set")
+
+
+classes = [MoonRaySceneProperties, MoonRayLightProperties, MoonRayObjectProperties]
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
     bpy.types.Scene.moonray = PointerProperty(type=MoonRaySceneProperties)
+    bpy.types.Light.moonray = PointerProperty(type=MoonRayLightProperties)
+    bpy.types.Object.moonray = PointerProperty(type=MoonRayObjectProperties)
+
 
 def unregister():
     del bpy.types.Scene.moonray
+    del bpy.types.Object.moonray
+    del bpy.types.Light.moonray
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

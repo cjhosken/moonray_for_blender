@@ -1,12 +1,9 @@
-import bpy
-
-from . import node
 from . import sets
 
+
+
 def register():
-    node.register()
     sets.register()
 
 def unregister():
-    node.unregister()
     sets.unregister()
