@@ -45,13 +45,17 @@ class MoonRayLightProperties(bpy.types.PropertyGroup):
     )
 
     lightfilter_set: StringProperty(name="Light Filter Set")
+    light_set_input: StringProperty(name="Light Sets")
+    shadow_set_input: StringProperty(name="Shadow Sets")
 
 class MoonRayObjectProperties(bpy.types.PropertyGroup):
     is_light : BoolProperty(name="Is Light Source")
 
-    trace_set: StringProperty(name="Trace Set")
+    light_set: StringProperty(name="Light Set")
     shadow_set: StringProperty(name="Shadow Set")
-    shadowreceiver_set: StringProperty(name="Shadow Receiver Set")
+    shadow_receiver_set: StringProperty(name="Shadow Receiver Set")
+    trace_set_input: StringProperty(name="Trace Set")
+    shadowreceiver_set_input: StringProperty(name="Shadow Receiver Set")
 
 
 classes = [MoonRaySceneProperties, MoonRayLightProperties, MoonRayObjectProperties]

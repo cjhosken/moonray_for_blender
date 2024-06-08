@@ -35,6 +35,8 @@ class MOONRAY_LIGHT_PT_light(MOONRAY_PT_Panel):
         main_col.prop(light.moonray, "motion_blur")
         
         layout.prop_search(light.moonray, "lightfilter_set", moonray.lightfilter_sets, "items", text="Light Filter Set", results_are_suggestions=True)
+        layout.prop(light.moonray, "light_set_input", text="Light Sets")
+        layout.prop(light.moonray, "shadow_set_input", text="Shadow Sets")
         
 
 classes = [MOONRAY_LIGHT_PT_light]

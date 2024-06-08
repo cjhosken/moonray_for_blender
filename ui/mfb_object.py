@@ -23,10 +23,11 @@ class MOONRAY_PT_ObjectPanel(MOONRAY_PT_Panel):
         
         layout.prop(obj.moonray, "is_light")
 
-        layout.prop_search(obj.moonray, "light_set", moonray.trace_sets, "items", text="Light Set", results_are_suggestions=True)
-        layout.prop_search(obj.moonray, "shadow_set", moonray.trace_sets, "items", text="Shadow Set", results_are_suggestions=True)
-        layout.prop_search(obj.moonray, "shadowreceiver_set", moonray.trace_sets, "items", text="Shadow Receiver Set", results_are_suggestions=True)
-        layout.prop_search(obj.moonray, "trace_set", moonray.trace_sets, "items", text="Trace Set", results_are_suggestions=True)
+        layout.prop_search(obj.moonray, "light_set", moonray.light_sets, "items", text="Light Set", results_are_suggestions=True)
+        layout.prop_search(obj.moonray, "shadow_set", moonray.shadow_sets, "items", text="Shadow Set", results_are_suggestions=True)
+        layout.prop_search(obj.moonray, "shadowreceiver_set", moonray.shadowreceiver_sets, "items", text="Shadow Receiver Set", results_are_suggestions=True)
+        layout.prop(obj.moonray, "shadowreceiver_set_input", text="Shadow Receiver Sets")
+        layout.prop(obj.moonray, "trace_set_input", text="Trace Sets")
 
         # Light set implementation
         # Is Light
