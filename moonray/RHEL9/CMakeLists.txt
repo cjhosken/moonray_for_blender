@@ -26,7 +26,7 @@ ExternalProject_Add(JsonCpp
 set(CHAIN JsonCpp)
 
 ExternalProject_Add(OpenSubdiv
-    URL https://github.com/PixarAnimationStudios/OpenSubdiv/archive/refs/tags/v3_6_0.tar.gz # v3_6_0
+    URL https://github.com/PixarAnimationStudios/OpenSubdiv/archive/refs/tags/v3_5_0.tar.gz # v3_5_0
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -40,8 +40,8 @@ ExternalProject_Add(OpenSubdiv
 set(CHAIN OpenSubdiv)
 
 ExternalProject_Add(OpenEXR
-    URL https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.2.4.tar.gz # v3.2.4
-    PATCH_COMMAND patch IlmBase/Half/CMakeLists.txt ${THIS_DIR}/../Imath_include_paths.patch
+    URL https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v2.5.7.tar.gz # v2.5.7
+    #PATCH_COMMAND patch IlmBase/Half/CMakeLists.txt ${THIS_DIR}/../Imath_include_paths.patch
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -61,7 +61,7 @@ ExternalProject_Add(Random123
 set(CHAIN Random123)
 
 ExternalProject_Add(ISPC
-    URL https://github.com/ispc/ispc/releases/download/v1.24.0/ispc-v1.24.0-linux.tar.gz
+    URL https://github.com/ispc/ispc/releases/download/v1.20.0/ispc-v1.20.0-linux.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
@@ -71,7 +71,7 @@ ExternalProject_Add(ISPC
 set(CHAIN ISPC)
 
 ExternalProject_Add(embree
-    URL https://github.com/RenderKit/embree/archive/refs/tags/v4.3.1.tar.gz # v4.3.1
+    URL https://github.com/RenderKit/embree/archive/refs/tags/v4.2.0.tar.gz # v4.3.1
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
