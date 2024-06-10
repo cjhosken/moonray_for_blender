@@ -130,13 +130,17 @@ cd "/usr/local/"
 bash "$SOURCE_DIR/building/$OS_DIST/install_optix.sh" --skip-license
 fi
 
-cd "$BUILD_DIR"
-
 echo "Optix Headers Loaded!"
 
 echo "Building MoonRay..."
 
-cmake "$SOURCE_DIR" -DPYTHON_EXECUTABLE=python3 -DBOOST_PYTHON_COMPONENT_NAME=python39 -DABI_VERSION=0 -DMOONRAY_USE_CUDA=YES
+cd "$BUILD_DIR"
+
+
+#-DBUILD_QT_APPS=NO
+#-DMOONRAY_USE_CUDA=NO
+cmake "$SOURCE_DIR" -DPYTHON_EXECUTABLE=python3 -DBOOST_PYTHON_COMPONENT_NAME=python39 -DABI_VERSION=0
+
 cmake --build . -- -j $(nproc)
 
 echo "MoonRay Built!"
@@ -147,15 +151,15 @@ if [ ! -d "$MOONRAY_DIR" ]; then
 mkdir "$MOONRAY_DIR"
 fi
 
-cmake --install . --prefix "$MOONRAY_DIR"
+cd "$BUILD_DIR"
 
+cmake --install . --prefix "$MOONRAY_DIR"
 
 # Set ownership and permissions for installed files
 chown -R "$SUDO_USER:$SUDO_USER" "$MOONRAY_DIR"
 chmod -R 755 "$MOONRAY_DIR"
 
 echo "MoonRay installation completed successfully!"
-
 
 echo "Running Test"
 

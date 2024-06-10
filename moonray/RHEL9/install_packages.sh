@@ -24,6 +24,7 @@ done
 
 
 dnf install -y epel-release
+dnf config-manager --enable crb
 
 # not required if you are not building with GPU support
 if [ $install_cuda -eq 1 ] 
@@ -46,9 +47,18 @@ dnf install -y lsb_release
 mkdir -p /installs/{bin,lib,include}
 cd /installs
 
-wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-linux-x86_64.tar.gz
-tar xzf cmake-3.23.1-linux-x86_64.tar.gz
-rm -rf /installs/cmake-3.23.1-linux-x86_64.tar.gz
+CMAKE_VERSION="3.29.4"
+
+wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-x86_64.tar.gz
+tar xzf cmake$CMAKE_VERSION-linux-x86_64.tar.gz
+rm -rf /installs/cmake-$CMAKE_VERSION-linux-x86_64.tar.gz
+
+# Installing Boost
+wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz
+tar -xzf boost_1_75_0.tar.gz
+cd boost_1_75_0
+./bootstrap.sh --prefix=/usr/local/
+./b2 install
 
 dnf install -y blosc blosc-devel #1.21.2
 dnf install -y boost boost-chrono boost-date-time boost-filesystem boost-python3 boost-program-options boost-regex boost-thread boost-system boost-devel #1.75.0
@@ -65,5 +75,5 @@ then
     dnf install -y qt5-qtbase-devel qt5-qtscript-devel
 fi
 
-export PATH=/installs/cmake-3.23.1-linux-x86_64/bin:/usr/local/cuda/bin:${PATH}
+export PATH=/installs/cmake-$CMAKE_VERSION-linux-x86_64/bin:/usr/local/cuda/bin:${PATH}
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}

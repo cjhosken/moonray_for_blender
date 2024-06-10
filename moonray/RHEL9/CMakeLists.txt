@@ -15,23 +15,23 @@ set(THIS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(InstallRoot /usr/local CACHE FILEPATH "Install root for dependencies")
 
 ExternalProject_Add(JsonCpp
-    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
-    GIT_TAG 5defb4ed1a4293b8e2bf641e16b156fb9de498cc # 1.9.5
+    URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz # 1.9.5
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
         -DBUILD_SHARED_LIBS=ON
         -DPYTHON_EXECUTABLE=/usr/bin/python3
+        -DJSONCPP_LIB_BUILD_SHARED:BOOL=ON
 )
 set(CHAIN JsonCpp)
 
 ExternalProject_Add(OpenSubdiv
-    GIT_REPOSITORY https://github.com/PixarAnimationStudios/OpenSubdiv
-    GIT_TAG 8ffa2b6566be10209529d7a0d1db02a0796b160c # v3_5_0
+    URL https://github.com/PixarAnimationStudios/OpenSubdiv/archive/refs/tags/v3_6_0.tar.gz # v3_6_0
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
       -DCMAKE_BUILD_TYPE=Release
+      -DPYTHON_EXECUTABLE=/usr/bin/python3
       -DNO_PTEX=1 -DNO_OMP=1 -DNO_TBB=1 -DNO_CUDA=1 -DNO_GLFW_X11=1 -DNO_DOC=1
       -DNO_OPENCL=1 -DNO_CLEW=1 -DNO_REGRESSION=1 -DNO_EXAMPLES=1 -DNO_TUTORIALS=1 -DNO_GLTESTS=1 
       -DNO_MACOS_FRAMEWORK=1 -DNO_METAL=1 -DNO_TESTS=1 
@@ -40,7 +40,8 @@ ExternalProject_Add(OpenSubdiv
 set(CHAIN OpenSubdiv)
 
 ExternalProject_Add(OpenEXR
-    URL https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.1.3.tar.gz # v3.1.3
+    URL https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.2.4.tar.gz # v3.2.4
+    PATCH_COMMAND patch IlmBase/Half/CMakeLists.txt ${THIS_DIR}/../Imath_include_paths.patch
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -50,8 +51,7 @@ ExternalProject_Add(OpenEXR
 set(CHAIN OpenEXR)
 
 ExternalProject_Add(Random123
-    GIT_REPOSITORY https://github.com/DEShawResearch/random123
-    GIT_TAG 726a093cd9a73f3ec3c8d7a70ff10ed8efec8d13 # v1.14.0
+    URL https://github.com/DEShawResearch/random123/archive/refs/tags/v1.14.0.tar.gz # v1.14.0
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
@@ -61,7 +61,7 @@ ExternalProject_Add(Random123
 set(CHAIN Random123)
 
 ExternalProject_Add(ISPC
-    URL https://github.com/ispc/ispc/releases/download/v1.20.0/ispc-v1.20.0-linux.tar.gz
+    URL https://github.com/ispc/ispc/releases/download/v1.24.0/ispc-v1.24.0-linux.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
@@ -71,8 +71,7 @@ ExternalProject_Add(ISPC
 set(CHAIN ISPC)
 
 ExternalProject_Add(embree
-    GIT_REPOSITORY https://github.com/embree/embree
-    GIT_TAG 341ef8c45d1ae072ead1ab65cd76e88b03d9302c # v4.2.0
+    URL https://github.com/RenderKit/embree/archive/refs/tags/v4.3.1.tar.gz # v4.3.1
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -88,26 +87,26 @@ ExternalProject_Add(embree
 set(CHAIN embree)
 
 ExternalProject_Add(OpenColorIO
-    URL https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.1.1.tar.gz # v2.0.2
+    URL https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.3.2.tar.gz # v2.3.2
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
         -DBUILD_SHARED_LIBS=ON
-        -Dexpat_ROOT=/usr/lib
-        -DHalf_ROOT=<INSTALL_DIR>/lib64
+        -DOCIO_BUILD_STATIC=OFF
+        -DOCIO_INSTALL_EXT_PACKAGES=ALL
         -DCMAKE_CXX_STANDARD=17
     DEPENDS ${CHAIN}
 )
 set(CHAIN OpenColorIO)
 
 ExternalProject_Add(OpenImageIO
-    URL https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v2.3.10.0.tar.gz # 2.3.20.0
+    URL https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v2.4.17.0.tar.gz # 2.4.17.0 (not 2.5.12.0 as not supported for EPEL 9)
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DOpenEXR_ROOT=<INSTALL_DIR>
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DUSE_QT=0
-        -DUSE_PYTHON=0
+        -DUSE_QT=OFF
+        -DUSE_PYTHON=OFF
     DEPENDS ${CHAIN}
 )
 set(CHAIN OpenImageIO)
@@ -125,8 +124,7 @@ ExternalProject_Add(OpenImageDenoise
 set(CHAIN OpenImageDenoise)
 
 ExternalProject_Add(USD
-    GIT_REPOSITORY https://github.com/PixarAnimationStudios/USD
-    GIT_TAG 0c7b9a95f155c221ff7df9270a39a52e3b23af8b # v22.11
+    URL https://github.com/PixarAnimationStudios/OpenUSD/archive/refs/tags/v22.11.tar.gz # v24.05
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=<INSTALL_DIR>

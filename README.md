@@ -16,9 +16,9 @@ If you need help, report an issue and I will try to deal with it as soon as poss
 
 ## Support
 
-* Blender 3.4.1
+* Blender 4.1.0
 
-Currently, this addon is not linked to MoonRay, due to issues with building the render engine.
+Currently, this addon is not linked to MoonRay, due to issues with building the render engine. I'm currently waiting on the Dreamworks team to update moonray.
 
 
 ## Acknowledgements
