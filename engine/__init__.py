@@ -7,13 +7,14 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
 
     bl_use_preview = True
     bl_use_gpu_context = True
-    bl_use_materialx = True
+    bl_use_materialx =False
 
-    bl_delegate_id = "HdStormRendererPlugin"
+    bl_delegate_id = "HdMoonrayRendererPlugin"
 
-    def __init__(self):
-        self.engine_ptr = None
-        pass
+    @classmethod
+    def register(cls):
+        import pxr.Plug
+        pxr.Plug.Registry().RegisterPlugins(['/home/cjhosken/org/dreamworks/openmoonray/plugin'])
 
 
     def get_render_settings(self, engine_type):
@@ -30,11 +31,12 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
         return result
     
     def update_render_passes(self, scene, render_layer):
-        if render_layer.use_pass_combined:
-            self.register_pass(scene, render_layer, 'Combined', 4, 'RGBA', 'COLOR')
         if render_layer.use_pass_z:
             self.register_pass(scene, render_layer, 'Depth', 1, 'Z', 'VALUE')
-    
+
+    def update(self, data, depsgraph):
+        super().update(data, depsgraph)
+
 
 def register():
     bpy.utils.register_class(MoonRayRenderEngine)

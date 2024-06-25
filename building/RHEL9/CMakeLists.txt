@@ -71,7 +71,7 @@ ExternalProject_Add(ISPC
 set(CHAIN ISPC)
 
 ExternalProject_Add(embree
-    URL https://github.com/RenderKit/embree/archive/refs/tags/v4.2.0.tar.gz # v4.3.1
+    URL https://github.com/RenderKit/embree/archive/refs/tags/v4.2.0.tar.gz # v4.2.0
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -87,7 +87,7 @@ ExternalProject_Add(embree
 set(CHAIN embree)
 
 ExternalProject_Add(OpenColorIO
-    URL https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.3.2.tar.gz # v2.3.2
+    URL https://github.com/AcademySoftwareFoundation/OpenColorIO/archive/refs/tags/v2.0.2.tar.gz # v2.0.2
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -100,7 +100,7 @@ ExternalProject_Add(OpenColorIO
 set(CHAIN OpenColorIO)
 
 ExternalProject_Add(OpenImageIO
-    URL https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v2.4.17.0.tar.gz # 2.4.17.0 (not 2.5.12.0 as not supported for EPEL 9)
+    URL https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v2.3.20.0.tar.gz # 2.3.20.0 (not 2.5.12.0 as not supported for EPEL 9)
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DOpenEXR_ROOT=<INSTALL_DIR>
@@ -124,7 +124,7 @@ ExternalProject_Add(OpenImageDenoise
 set(CHAIN OpenImageDenoise)
 
 ExternalProject_Add(USD
-    URL https://github.com/PixarAnimationStudios/OpenUSD/archive/refs/tags/v22.11.tar.gz # v24.05
+    URL https://github.com/PixarAnimationStudios/OpenUSD/archive/refs/tags/v23.11.tar.gz # v23.11
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=<INSTALL_DIR>

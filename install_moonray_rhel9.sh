@@ -95,7 +95,7 @@ if [ -d "$INSTALL_DIR/source/building/$OS_DIST" ]; then
 rm -rf "$INSTALL_DIR/source/building/$OS_DIST"
 fi
 
-cp -r "$script_dir/moonray/$OS_DIST/" "$INSTALL_DIR/source/building/$OS_DIST/"
+cp -r "$script_dir/building/$OS_DIST/" "$INSTALL_DIR/source/building/$OS_DIST/"
 chown -R "$SUDO_USER:$SUDO_USER" "$INSTALL_DIR/source/building/$OS_DIST"
 chmod -R 755 "$INSTALL_DIR/source/building/$OS_DIST"
 
@@ -164,4 +164,3 @@ echo "MoonRay installation completed successfully!"
 echo "Running Test"
 
 source "$MOONRAY_DIR/scripts/setup.sh"
-moonray -in $SOURCE_DIR/testdata/rectangle.rdla -out /tmp/rectangle.exr
