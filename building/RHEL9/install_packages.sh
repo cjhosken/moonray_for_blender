@@ -30,7 +30,7 @@ dnf config-manager --enable crb
 if [ $install_cuda -eq 1 ] 
 then
     dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
-    dnf install -y cuda-runtime-11-8 cuda-toolkit-11-8
+    dnf install -y cuda-runtime-12-1 cuda-toolkit-12-1
 fi
 
 dnf install -y libglvnd-devel
@@ -44,14 +44,14 @@ dnf install -y bison flex wget git python3 python3-devel patch \
 
 dnf install -y lsb_release
 
-mkdir -p /installs/{bin,lib,include}
-cd /installs
+mkdir -p ./installs/{bin,lib,include}
+cd ./installs
 
 CMAKE_VERSION="3.29.4"
 
 wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-x86_64.tar.gz
 tar xzf cmake$CMAKE_VERSION-linux-x86_64.tar.gz
-rm -rf /installs/cmake-$CMAKE_VERSION-linux-x86_64.tar.gz
+rm -rf ./installs/cmake-$CMAKE_VERSION-linux-x86_64.tar.gz
 
 # Installing Boost
 wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz
@@ -75,5 +75,5 @@ then
     dnf install -y qt5-qtbase-devel qt5-qtscript-devel
 fi
 
-export PATH=/installs/cmake-$CMAKE_VERSION-linux-x86_64/bin:/usr/local/cuda/bin:${PATH}
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+export PATH="./installs/cmake-$CMAKE_VERSION-linux-x86_64/bin:/usr/local/cuda/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"

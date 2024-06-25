@@ -14,12 +14,12 @@ update_and_install() {
 
   case $package_manager in
     apt-get)
-      $package_manager update
-      $package_manager install -y git cmake build-essential libtbb-dev
+      sudo $package_manager update
+      sudo $package_manager install -y git cmake build-essential libtbb-dev
       ;;
     yum)
-      $package_manager update -y
-      $package_manager install -y git cmake gcc-c++ make tbb-devel
+      sudo $package_manager update -y
+      sudo $package_manager install -y git cmake gcc-c++ make tbb-devel
       ;;
     *)
       echo "Unsupported package manager: $package_manager"
@@ -41,21 +41,19 @@ else
 fi
 
 # Get the non-sudo user's home directory
-non_sudo_home_dir=$(eval echo "~$SUDO_USER")
+non_sudo_home_dir=$(eval echo "~")
 script_dir=/home/cjhosken/Documents/programming/moonray_for_blender
 
 # Define the installation directory
-INSTALL_DIR=$non_sudo_home_dir/dreamworks
+INSTALL_DIR=$non_sudo_home_dir/org/dreamworks
 SOURCE_DIR=$INSTALL_DIR/source
-MOONRAY_DIR=$INSTALL_DIR/moonray
+MOONRAY_DIR=$INSTALL_DIR/openmoonray
 
 BUILD_DIR=$INSTALL_DIR/build
 
 
 if [ ! -d "$SOURCE_DIR" ]; then
   mkdir -p "$INSTALL_DIR"
-  chown -R "$SUDO_USER:$SUDO_USER" "$INSTALL_DIR"
-  chmod -R 755 "$INSTALL_DIR"
 fi
 
 if [ -d "$SOURCE_DIR" ]; then
@@ -78,16 +76,9 @@ else
 git clone --recurse-submodules https://github.com/dreamworksanimation/openmoonray.git "$SOURCE_DIR"
 fi
 
-# Change ownership and permissions
-chown -R "$SUDO_USER:$SUDO_USER" "$SOURCE_DIR"
-chmod -R 755 "$SOURCE_DIR"
-
 if [ ! -d "$BUILD_DIR" ]; then
 mkdir -p "$BUILD_DIR"
 fi
-chown -R "$SUDO_USER:$SUDO_USER" "$BUILD_DIR"
-chmod -R 755 "$BUILD_DIR"
-
 
 cd "$BUILD_DIR"
 
@@ -96,18 +87,16 @@ rm -rf "$INSTALL_DIR/source/building/$OS_DIST"
 fi
 
 cp -r "$script_dir/building/$OS_DIST/" "$INSTALL_DIR/source/building/$OS_DIST/"
-chown -R "$SUDO_USER:$SUDO_USER" "$INSTALL_DIR/source/building/$OS_DIST"
-chmod -R 755 "$INSTALL_DIR/source/building/$OS_DIST"
 
-if [ -d "/installs" ]; then
-rm -rf "/installs"
+if [ -d "./installs" ]; then
+rm -rf "./installs"
 fi
 
-mkdir -p /installs
+mkdir -p ./installs
 
 cd "$BUILD_DIR"
 
-source "$SOURCE_DIR/building/$OS_DIST/install_packages.sh"
+sudo source "$SOURCE_DIR/building/$OS_DIST/install_packages.sh"
 
 echo "Using Cmake Version"
 cmake --version
@@ -116,9 +105,6 @@ echo "Building Dependencies..."
 
 cmake "$SOURCE_DIR/building/$OS_DIST/"
 cmake --build . -- -j $(nproc)
-
-chown -R "$SUDO_USER:$SUDO_USER" "$BUILD_DIR"
-chmod -R 755 "$BUILD_DIR"
 
 echo "Dependencies Built!"
 
@@ -136,9 +122,6 @@ echo "Building MoonRay..."
 
 cd "$BUILD_DIR"
 
-
-#-DBUILD_QT_APPS=NO
-#-DMOONRAY_USE_CUDA=NO
 cmake "$SOURCE_DIR" -DPYTHON_EXECUTABLE=python3 -DBOOST_PYTHON_COMPONENT_NAME=python39 -DABI_VERSION=0
 
 cmake --build . -- -j $(nproc)
@@ -155,12 +138,12 @@ cd "$BUILD_DIR"
 
 cmake --install . --prefix "$MOONRAY_DIR"
 
-# Set ownership and permissions for installed files
-chown -R "$SUDO_USER:$SUDO_USER" "$MOONRAY_DIR"
-chmod -R 755 "$MOONRAY_DIR"
-
 echo "MoonRay installation completed successfully!"
 
 echo "Running Test"
 
 source "$MOONRAY_DIR/scripts/setup.sh"
+
+if [ -d "./installs" ]; then
+rm -rf "./installs"
+fi
