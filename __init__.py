@@ -3,8 +3,8 @@ import bpy
 bl_info = {
     "name" : "MoonRay For Blender",
     "author" : "Christopher Hosken",
-    "version" : (1, 5, 0, 0),
-    "blender" : (4, 2, 0),
+    "version" : (1, 6, 0, 0),
+    "blender" : (4, 3, 0),
     "description" : "Dreamworks' MoonRay Production Renderer integration into Blender",
     "warning" : "This Addon is currently under development",
     "support": "COMMUNITY",
