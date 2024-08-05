@@ -7,7 +7,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
 
     bl_use_preview = True
     bl_use_gpu_context = True
-    bl_use_materialx =False
+    bl_use_materialx = False
 
     bl_delegate_id = "HdMoonrayRendererPlugin"
 
