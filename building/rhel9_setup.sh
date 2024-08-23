@@ -41,6 +41,20 @@ mkdir $MFB_DIR/installs
 mkdir $MFB_DIR/installs/openmoonray
 cmake --install . --prefix $MFB_DIR/installs/openmoonray
 
+SOURCE_LINE="source $MFB_DIR/installs/openmoonray/scripts/setup.sh"
+
+# The .bashrc file path
+BASHRC_PATH="$HOME/.bashrc"
+
+# Check if the line already exists in .bashrc
+if grep -Fxq "$SOURCE_LINE" "$BASHRC_PATH"; then
+    echo "The line already exists in .bashrc."
+else
+    # If the line doesn't exist, add it
+    echo "$SOURCE_LINE" >> "$BASHRC_PATH"
+    echo "The line has been added to .bashrc."
+fi
+
 source $MFB_DIR/installs/openmoonray/scripts/setup.sh
 
 cd $SCRIPT_DIR
