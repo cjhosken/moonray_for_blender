@@ -61,8 +61,8 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         rdla_filepath = os.path.splitext(usd_filepath)[0] + extension
         
         # Construct the command to source the setup script and run the conversion
-        command = f"source /home/hoske/.mfb/installs/openmoonray/scripts/setup.sh && " \
-                  f"/home/hoske/.mfb/installs/openmoonray/bin/hd_usd2rdl -in {usd_filepath} -out {rdla_filepath}"
+        command = f"source {os.path.join(os.path.expanduser("~"), ".mfb/installs/openmoonray/scripts/setup.sh")} && " \
+                  f"{os.path.join(os.path.expanduser("~"), ".mfb/installs/openmoonray/bin/hd_usd2rdl")} -in {usd_filepath} -out {rdla_filepath}"
         
         try:
             # Run the command in a shell
