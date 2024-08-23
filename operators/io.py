@@ -8,20 +8,46 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
     bl_description="Export Dreamworks MoonRay RDL2 (.rdla/.rdlb) file"
     bl_label = "Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
     
-    filepath: StringProperty(subtype="FILE_PATH", default=bpy.path.abspath('~/scene.rdla'))
+    filepath: StringProperty(subtype="FILE_PATH", default=os.path.join(os.path.expanduser("~"), "scene.rdla"))
     
+    filter_glob: StringProperty(
+        default="*.rdla;*.rdlb",
+        options={'HIDDEN'},
+    )
+
+    export_selection_only: BoolProperty(
+        name="Export Selection Only",
+        description="Export only the selected objects",
+        default=False
+    )
+
+    export_visible_only: BoolProperty(
+        name="Export Visible Only",
+        description="Export only the visible objects",
+        default=False
+    )
+
     def execute(self, context):
-        # 1. Export the current Blender scene to a USD file
+        if self.filepath == "":
+            return {"FINISHED"}
+        
+        # Export the current Blender scene to a USD file
         usd_filepath = os.path.splitext(self.filepath)[0] + ".usd"
         is_rdla = os.path.splitext(self.filepath)[1] == ".rdla"
 
-        bpy.ops.wm.usd_export(filepath=usd_filepath)
+        bpy.ops.wm.usd_export(filepath=usd_filepath, selected_objects_only=self.export_selection_only, visible_objects_only=self.export_visible_only)
         print(f"Exported USD file to {usd_filepath}")
         
-        # 2. Convert the USD file to RDLA
+        # Convert the USD file to RDLA/RDLB
         rdla_filepath = self.convert_usd_to_rdla(usd_filepath, is_rdla)
         if rdla_filepath:
             print(f"Converted USD to RDLA: {rdla_filepath}")
+            # Delete the temporary USD file
+            try:
+                os.remove(usd_filepath)
+                print(f"Deleted temporary USD file: {usd_filepath}")
+            except OSError as e:
+                print(f"Error deleting USD file: {e}")
         else:
             print("Conversion failed.")
             return {'CANCELLED'}
