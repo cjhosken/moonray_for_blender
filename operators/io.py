@@ -6,7 +6,7 @@ from bpy.props import *
 class MOONRAY_OT_ExportRDL(bpy.types.Operator):
     bl_idname = "moonray.export_rdl"
     bl_description="Export Dreamworks MoonRay RDL2 (.rdla/.rdlb) file"
-    bl_label = "Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
+    bl_label = "Export Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
     
     filepath: StringProperty(subtype="FILE_PATH", default=os.path.join(os.path.expanduser("~"), "scene.rdla"))
     
