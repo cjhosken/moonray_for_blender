@@ -27,6 +27,12 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         default=False
     )
 
+    export_animation: BoolProperty(
+        name="Export Animation",
+        description="Export the animation",
+        default=False
+    )
+
     def execute(self, context):
         print(self.filepath)
         if len(os.path.basename(self.filepath)) < 1:
@@ -36,7 +42,11 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         usd_filepath = os.path.splitext(self.filepath)[0] + ".usd"
         is_rdla = os.path.splitext(self.filepath)[1] == ".rdla"
 
-        bpy.ops.wm.usd_export(filepath=usd_filepath, selected_objects_only=self.export_selection_only, visible_objects_only=self.export_visible_only)
+        bpy.ops.wm.usd_export(filepath=usd_filepath, 
+                              selected_objects_only=self.export_selection_only, 
+                              visible_objects_only=self.export_visible_only,
+                              export_animation=self.export_animation
+                              )
         print(f"Exported USD file to {usd_filepath}")
         
         # Convert the USD file to RDLA/RDLB
