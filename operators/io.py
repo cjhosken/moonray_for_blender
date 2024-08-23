@@ -1,39 +1,25 @@
 import bpy
 import os, subprocess
 from bpy.props import *
-
-class MOONRAY_OT_ImportRDL(bpy.types.Operator):
-    bl_idname = "moonray.import_rdl"
-    bl_description=""
-    bl_label = "Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
-    
-    filepath: StringProperty(subtype="FILE_PATH")
-    
-    def execute(self, context):
-        # Your import logic here
-        print(f"Importing from {self.filepath}")
-        return {'FINISHED'}
-    
-    def invoke(self, context, event):
-        context.window_manager.fileselect_add(self)
-        return {'RUNNING_MODAL'}
-
+        
 # Define the export operator
 class MOONRAY_OT_ExportRDL(bpy.types.Operator):
     bl_idname = "moonray.export_rdl"
     bl_description="Export Dreamworks MoonRay RDL2 (.rdla/.rdlb) file"
     bl_label = "Dreamworks MoonRay RDL2 (.rdla/.rdlb)"
     
-    filepath: StringProperty(subtype="FILE_PATH", default="scene.rdla")
+    filepath: StringProperty(subtype="FILE_PATH", default=bpy.path.abspath('~/scene.rdla'))
     
     def execute(self, context):
         # 1. Export the current Blender scene to a USD file
         usd_filepath = os.path.splitext(self.filepath)[0] + ".usd"
+        is_rdla = os.path.splitext(self.filepath)[1] == ".rdla"
+
         bpy.ops.wm.usd_export(filepath=usd_filepath)
         print(f"Exported USD file to {usd_filepath}")
         
         # 2. Convert the USD file to RDLA
-        rdla_filepath = self.convert_usd_to_rdla(usd_filepath)
+        rdla_filepath = self.convert_usd_to_rdla(usd_filepath, is_rdla)
         if rdla_filepath:
             print(f"Converted USD to RDLA: {rdla_filepath}")
         else:
@@ -42,9 +28,11 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         
         return {'FINISHED'}
     
-    def convert_usd_to_rdla(self, usd_filepath):
+    def convert_usd_to_rdla(self, usd_filepath, is_rdla):
         # Set up paths
-        rdla_filepath = os.path.splitext(usd_filepath)[0] + ".rdla"
+        extension = ".rdla" if is_rdla else ".rdlb"
+
+        rdla_filepath = os.path.splitext(usd_filepath)[0] + extension
         
         # Construct the command to source the setup script and run the conversion
         command = f"source /home/hoske/.mfb/installs/openmoonray/scripts/setup.sh && " \
@@ -62,7 +50,7 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
     
-classes = [MOONRAY_OT_ImportRDL, MOONRAY_OT_ExportRDL]
+classes = [MOONRAY_OT_ExportRDL]
 
 
 def register():
