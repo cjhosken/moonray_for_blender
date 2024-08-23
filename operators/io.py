@@ -33,6 +33,36 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         default=False
     )
 
+    export_materials: BoolProperty(
+        name="Export Materials",
+        description="Include materials in the .rdla/.rdlb export",
+        default=True
+    )
+
+    export_lights: BoolProperty(
+        name="Export Lights",
+        description="Include lights in the .rdla/.rdlb export",
+        default=True
+    )
+
+    export_hair: BoolProperty(
+        name="Export Hair",
+        description="Include hair in the .rdla/.rdlb export",
+        default=True
+    )
+
+    export_cameras: BoolProperty(
+        name="Export Cameras",
+        description="Include cameras in the .rdla/.rdlb export",
+        default=True
+    )
+
+    keep_usd : BoolProperty(
+        name="Export USD",
+        description="Export a .usd file alongisde the .rdla/.rdlb file.",
+        default=True
+    )
+
     def execute(self, context):
         print(self.filepath)
         if len(os.path.basename(self.filepath)) < 1:
@@ -45,8 +75,12 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         bpy.ops.wm.usd_export(filepath=usd_filepath, 
                               selected_objects_only=self.export_selection_only, 
                               visible_objects_only=self.export_visible_only,
-                              export_animation=self.export_animation
+                              export_animation=self.export_animation,
+                              export_materials=False
                               )
+        
+        # https://docs.blender.org/api/current/bpy.ops.wm.html
+
         print(f"Exported USD file to {usd_filepath}")
         
         # Convert the USD file to RDLA/RDLB
@@ -55,8 +89,9 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
             print(f"Converted USD to RDLA: {rdla_filepath}")
             # Delete the temporary USD file
             try:
-                os.remove(usd_filepath)
-                print(f"Deleted temporary USD file: {usd_filepath}")
+                if (not self.keep_usd):
+                    os.remove(usd_filepath)
+                    print(f"Deleted temporary USD file: {usd_filepath}")
             except OSError as e:
                 print(f"Error deleting USD file: {e}")
         else:
@@ -65,7 +100,7 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         
         return {'FINISHED'}
     
-    def convert_usd_to_rdla(self, usd_filepath, is_rdla):
+    def convert_usd_to_rdla(self, usd_filepath, is_rdla=False):
         # Set up paths
         extension = ".rdla" if is_rdla else ".rdlb"
 
