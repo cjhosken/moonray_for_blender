@@ -28,12 +28,24 @@ cmake $MFB_DIR/source/building/RHEL9 -DInstallRoot="$MFB_DIR/dependencies"
 sudo -s cmake --build . -- -j $(nproc)
 
 cd $MFB_DIR/dependencies
-cp $SCRIPT_DIR/optix.sh $MFB_DIR/dependencies/optix.sh
-sudo bash $MFB_DIR/dependencies/optix.sh --skip-license --exclude-subdir
+cp $SCRIPT_DIR/linux_optix.sh $MFB_DIR/dependencies/linux_optix.sh
+sudo bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
 
 sudo rm -rf $MFB_DIR/build/*
-cd $MFB_DIR/build
-cmake $MFB_DIR/source -DPYTHON_EXECUTABLE=python3 -DBOOST_PYTHON_COMPONENT_NAME=python39 -DABI_VERSION=0 -DCMAKE_PREFIX_PATH="$MFB_DIR/dependencies"
+cd $MFB_DIR/builds
+
+
+BLENDER_DIR="$HOME/"
+
+cmake $MFB_DIR/source \
+  -DPYTHON_EXECUTABLE="$HOME/programming/blender-git/blender/lib/linux_x64/python/" \
+  -DABI_VERSION=0 \
+  -DCMAKE_PREFIX_PATH="$MFB_DIR/dependencies" \
+  -DPXR_INCLUDE_DIRS="$HOME/programming/blender-git/blender/lib/linux_x64/usd/include" \
+  -DPXR_LIBRARY_DIRS="$HOME/programming/blender-git/blender/lib/linux_x64/usd/lib/usd" \
+  -DPYTHON_INCLUDE_DIRS="$HOME/programming/blender-git/blender/lib/linux_x64/python/include" \
+  -DPYTHON_LIBRARY=/usr/lib64/libpython3.9.so
+
 cmake --build . -j $(nproc)
 
 rm -rf $MFB_DIR/installs
