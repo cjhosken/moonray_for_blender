@@ -5,7 +5,35 @@ while true; do sudo -n true; sleep 60; done 2>/dev/null &
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
-MFB_DIR="$HOME/.mfb"
+
+DEFAULT_MFB_DIR="$HOME/.mfb"
+DEFAULT_BLENDER_DIR="$HOME/software/blender/blender-4.1.0-linux-x64"
+
+# Initialize variables with default values
+MFB_DIR="$DEFAULT_MFB_DIR"
+BLENDER_DIR="$DEFAULT_BLENDER_DIR"
+
+# Parse command-line arguments using getopts
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --mfb-dir)
+            MFB_DIR="$2"
+            shift 2
+            ;;
+        --blender-dir)
+            BLENDER_DIR="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Usage: $0 [--mfb-dir /path/to/mfb] [--blender-dir /path/to/blender]"
+            exit 1
+            ;;
+    esac
+done
+
+echo "MFB_DIR: $MFB_DIR"
+echo "BLENDER_DIR: $BLENDER_DIR"
 
 mkdir -p "$MFB_DIR"
 cd "$MFB_DIR"
