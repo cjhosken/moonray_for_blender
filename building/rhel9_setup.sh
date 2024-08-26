@@ -12,7 +12,7 @@ cd "$MFB_DIR"
 
 git clone --recurse-submodules https://github.com/dreamworksanimation/openmoonray.git $MFB_DIR/source
 
-sudo rm -rf $MFB_DIR/dependencies
+rm -rf $MFB_DIR/dependencies
 mkdir $MFB_DIR/dependencies
 
 rm -rf $MFB_DIR/source/building/RHEL9
@@ -29,7 +29,7 @@ cmake --build . -- -j $(nproc)
 
 cd $MFB_DIR/dependencies
 cp $SCRIPT_DIR/linux_optix.sh $MFB_DIR/dependencies/linux_optix.sh
-sudo bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
+bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
 
 rm -rf $MFB_DIR/build/*
 cd $MFB_DIR/builds
