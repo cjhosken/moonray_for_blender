@@ -16,17 +16,18 @@
                 "LIBCURL_ROOT": "$env{DEPS_ROOT}",
                 "LOG4CPLUS_ROOT": "$env{DEPS_ROOT}",
                 "LUA_DIR": "$env{DEPS_ROOT}",
-                "OPENSUBDIV_ROOT": "$env{DEPS_ROOT}",
-                "OPENVDB_ROOT": "$env{DEPS_ROOT}",
+                "OPENSUBDIV_ROOT": "$env{BLENDER_DIR}/lib/linux_x64/opensubdiv",
+                "OPENVDB_ROOT": "$env{BLENDER_DIR}/lib/linux_x64/openvdb",
                 "OPTIX_ROOT": "$env{DEPS_ROOT}/optix",
                 "PXR_USD_LOCATION": "$env{DEPS_ROOT}/usd",
                 "PXR_INCLUDE_DIRS": "$env{DEPS_ROOT}/usd/include",
                 "PYTHON_INCLUDE_DIRS":"$env{BLENDER_DIR}/lib/linux_x64/python/include/python3.11",
+                "Python_LIBRARY": "$env{BLENDER_DIR}/lib/linux_x64/python/lib",
                 "RANDOM123_ROOT": "$env{DEPS_ROOT}",
                 "ZLIB_ROOT": "$env{DEPS_ROOT}"
             },
             "cacheVariables": {
-                "CMAKE_PREFIX_PATH": "$env{DEPS_ROOT};$env{BLENDER_DIR}/lib/linux_x64"
+                "CMAKE_PREFIX_PATH": "$env{DEPS_ROOT};$env{BLENDER_DIR}/lib/linux_x64"            
             }
         },
         {
@@ -38,8 +39,7 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_INSTALL_PREFIX": "${sourceParentDir}/installs/blender/linux-release",
                 "ABI_VERSION":"0",
-                "BOOST_PYTHON_COMPONENT_NAME":"python311",
-                "PYTHON_EXECUTABLE":"$env{BLENDER_DIR}/lib/linux_x64/python/bin/python3.11"
+                "BOOST_PYTHON_COMPONENT_NAME":"python311"
             },
             "generator": "Unix Makefiles"
         }

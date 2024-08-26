@@ -1,8 +1,5 @@
 #!/bin/bash
 
-sudo -v
-while true; do sudo -n true; sleep 60; done 2>/dev/null &
-
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 MFB_DIR="$HOME/.mfb"
@@ -12,40 +9,35 @@ cd "$MFB_DIR"
 
 git clone --recurse-submodules https://github.com/dreamworksanimation/openmoonray.git $MFB_DIR/source
 
-sudo rm -rf $MFB_DIR/dependencies
+rm -rf $MFB_DIR/dependencies
 mkdir $MFB_DIR/dependencies
 
 rm -rf $MFB_DIR/source/building/RHEL9
 cp -r $SCRIPT_DIR/RHEL9 $MFB_DIR/source/building/RHEL9
 
-sudo -s source $MFB_DIR/source/building/RHEL9/install_packages.sh
+source $MFB_DIR/source/building/RHEL9/install_packages.sh
 
 rm -rf $MFB_DIR/build
 mkdir $MFB_DIR/build
 cd $MFB_DIR/build
 
 cmake $MFB_DIR/source/building/RHEL9 -DInstallRoot="$MFB_DIR/dependencies"
-sudo -s cmake --build . -- -j $(nproc)
+cmake --build . -- -j $(nproc)
 
 cd $MFB_DIR/dependencies
 cp $SCRIPT_DIR/linux_optix.sh $MFB_DIR/dependencies/linux_optix.sh
-sudo bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
+bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
 
-sudo rm -rf $MFB_DIR/build/*
+rm -rf $MFB_DIR/build/*
 cd $MFB_DIR/builds
 
+cp $SCRIPT_DIR/CMakePresets.json $MFB_DIR/source/CMakePresets.json
+cp $SCRIPT_DIR/pxrConfig.cmake $MFB_DIR/dependencies/pxrConfig.cmake
 
-BLENDER_DIR="$HOME/"
+BLENDER_DIR="$HOME/software/blender/blender-4.1.0-linux-x64"
+LD_LIBRARY_PATH="$BLENDER_DIR/lib:$BLENDER_DIR/4.1/python/lib:$LD_LIBRARY_PATH"
 
-cmake $MFB_DIR/source \
-  -DPYTHON_EXECUTABLE="$HOME/programming/blender-git/blender/lib/linux_x64/python/" \
-  -DABI_VERSION=0 \
-  -DCMAKE_PREFIX_PATH="$MFB_DIR/dependencies" \
-  -DPXR_INCLUDE_DIRS="$HOME/programming/blender-git/blender/lib/linux_x64/usd/include" \
-  -DPXR_LIBRARY_DIRS="$HOME/programming/blender-git/blender/lib/linux_x64/usd/lib/usd" \
-  -DPYTHON_INCLUDE_DIRS="$HOME/programming/blender-git/blender/lib/linux_x64/python/include" \
-  -DPYTHON_LIBRARY=/usr/lib64/libpython3.9.so
-
+cmake $MFB_DIR/source --preset linux-blender-release
 cmake --build . -j $(nproc)
 
 rm -rf $MFB_DIR/installs
