@@ -128,34 +128,3 @@ ExternalProject_Add(OpenImageDenoise
     DEPENDS ${CHAIN}
 )
 set(CHAIN OpenImageDenoise)
-
-ExternalProject_Add(USD
-    GIT_REPOSITORY https://github.com/PixarAnimationStudios/USD
-    GIT_TAG 0c7b9a95f155c221ff7df9270a39a52e3b23af8b # v22.11
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=<INSTALL_DIR>
-        -DPXR_ENABLE_PYTHON_SUPPORT=ON
-        -DPXR_USE_PYTHON_3=ON
-        -DPYTHON_LIBRARIES=/usr/lib64
-        -DPYTHON_INCLUDE_DIRS=/usr/include
-        -DBoost_LIBRARY_DIR=/usr/lib64
-        -DBoost_INCLUDE_DIR=/usr/include
-        -DTBB_USE_DEBUG_BUILD=OFF
-        -DTBB_ROOT_DIR=/usr
-        -DTBB_LIBRARIES=/usr/lib64
-        -DTBB_INCLUDE_DIRS=/usr/include ..
-        -DPXR_BUILD_TESTS=OFF
-        -DPXR_BUILD_EXAMPLES=OFF
-        -DPXR_BUILD_TUTORIALS=OFF
-        -DPXR_BUILD_USD_TOOLS=OFF
-        -DPXR_ENABLE_PTEX_SUPPORT=OFF
-        -DPXR_ENABLE_OPENVDB_SUPPORT=OFF
-        -DPXR_BUILD_USDVIEW=OFF
-        -DBoost_NO_BOOST_CMAKE=ON
-        -DBoost_NO_SYSTEM_PATHS=ON
-        -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1
-    DEPENDS ${CHAIN}
-)
-set(CHAIN USD)
-
