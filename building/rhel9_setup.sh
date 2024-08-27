@@ -56,6 +56,7 @@ cmake $MFB_DIR/source/building/RHEL9 -DInstallRoot="$MFB_DIR/dependencies"
 cmake --build . -- -j $(nproc)
 
 cd $MFB_DIR/dependencies
+<<<<<<< HEAD
 cp $SCRIPT_DIR/linux_optix.sh $MFB_DIR/dependencies/linux_optix.sh
 bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
 
@@ -73,6 +74,15 @@ cp -r $SCRIPT_DIR/bl_deps $MFB_DIR/dependencies/bl_deps
 
 cmake $MFB_DIR/source --preset linux-blender-release
 cmake --build $MFB_DIR/build -j $(nproc)
+=======
+cp $SCRIPT_DIR/optix.sh $MFB_DIR/dependencies/optix.sh
+sudo bash $MFB_DIR/dependencies/optix.sh --skip-license --exclude-subdir
+
+sudo rm -rf $MFB_DIR/build/*
+cd $MFB_DIR/build
+cmake $MFB_DIR/source -DPYTHON_EXECUTABLE=python3 -DBOOST_PYTHON_COMPONENT_NAME=python39 -DABI_VERSION=0 -DCMAKE_PREFIX_PATH="$MFB_DIR/dependencies"
+cmake --build . -j $(nproc)
+>>>>>>> parent of 4d4427df (linking setups)
 
 rm -rf $MFB_DIR/installs
 mkdir $MFB_DIR/installs
