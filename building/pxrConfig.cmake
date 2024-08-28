@@ -17,8 +17,7 @@ set(PXR_PATCH_VERSION "11")
 set(PXR_VERSION "2311")
 
 # Set the root directory for USD
-set(USD_ROOT "$ENV{HOME}/programming/blender-git/blender/lib/linux_x64/usd")
-set(PYTHON_INCLUDE_DIRS "$ENV{HOME}/programming/blender-git/blender/lib/linux_x64/python/include/python3.11")
+set(USD_ROOT "$ENV{MFB_DIR}/dependencies/bl_deps/usd")
 # Path to the USD monolithic library
 set(PXR_usd_ms_LIBRARY "${USD_ROOT}/lib/libusd_ms.so")
 
@@ -42,7 +41,14 @@ message(STATUS "PXR_INCLUDE_DIRS: ${PXR_INCLUDE_DIRS}")
 message(STATUS "PXR_LIBRARIES: ${PXR_LIBRARIES}")
 
 include_directories(${PXR_INCLUDE_DIRS})
-message(STATUS "PYTHON_INCLUDE_DIRS:" ${PYTHON_INCLUDE_DIRS})
-include_directories(${PYTHON_INCLUDE_DIRS})
-
 link_libraries(${PXR_LIBRARIES})
+
+set(BL_PYTHON_ROOT "$ENV{MFB_DIR}/dependencies/bl_deps/python")
+
+set(PYTHON_INCLUDE_DIRS "$ENV{BL_PYTHON_ROOT}/include/python3.11")
+set(PYTHON_LIBRARIES "$ENV{BL_PYTHON_ROOT}/lib/libpython3.11.a")
+
+message(STATUS "PYTHON_INCLUDE_DIRS:" ${PYTHON_INCLUDE_DIRS})
+message(STATUS "PYTHON_LIBRARIES:" ${PYTHON_LIBRARIES})
+include_directories(${PYTHON_INCLUDE_DIRS})
+link_libraries(${PYTHON_LIBRARIES})

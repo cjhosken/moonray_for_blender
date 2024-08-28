@@ -14,7 +14,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
     @classmethod
     def register(cls):
         import pxr.Plug
-        pxr.Plug.Registry().RegisterPlugins([os.path.join(os.path.expanduser("~"), '.mfb/installs/openmoonray/plugin')])
+        pxr.Plug.Registry().RegisterPlugins([os.path.join(os.path.expanduser("~"), '.mfb/installs/openmoonray/plugin/pxr')])
 
 
     def get_render_settings(self, engine_type):
