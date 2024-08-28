@@ -5,7 +5,6 @@ while true; do sudo -n true; sleep 60; done 2>/dev/null &
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
-
 DEFAULT_MFB_DIR="$HOME/.mfb"
 DEFAULT_BLENDER_DIR="$HOME/software/blender/blender-4.1.0-linux-x64"
 
@@ -53,17 +52,14 @@ mkdir $MFB_DIR/build
 cd $MFB_DIR/build
 
 cmake $MFB_DIR/source/building/RHEL9 -DInstallRoot="$MFB_DIR/dependencies"
-cmake --build . -- -j $(nproc)
-
-cd $MFB_DIR/dependencies
-<<<<<<< HEAD
-cp $SCRIPT_DIR/linux_optix.sh $MFB_DIR/dependencies/linux_optix.sh
-bash $MFB_DIR/dependencies/linux_optix.sh --skip-license --exclude-subdir
+cmake --build $MFB_DIR/build -j $(nproc)
 
 rm -rf $MFB_DIR/build/*
-cd $MFB_DIR/builds
+cd $MFB_DIR/dependencies
 
-BLENDER_DIR="$HOME/software/blender/blender-4.1.0-linux-x64"
+cp $SCRIPT_DIR/optix.sh $MFB_DIR/dependencies/optix.sh
+chmod +x $MFB_DIR/dependencies/optix.sh
+bash $MFB_DIR/dependencies/optix.sh --skip-license --exclude-subdir
 
 PATH=$MFB_DIR/dependencies/cmake-3.23.1-linux-x86_64/bin:/usr/local/cuda/bin:$PATH
 LD_LIBRARY_PATH=/usr/local/cuda/lib64:$BLENDER_DIR/lib:$BLENDER_DIR/4.1/python/lib:$LD_LIBRARY_PATH
@@ -72,22 +68,14 @@ cp $SCRIPT_DIR/CMakePresets.json $MFB_DIR/source/CMakePresets.json
 cp $SCRIPT_DIR/pxrConfig.cmake $MFB_DIR/dependencies/pxrConfig.cmake
 cp -r $SCRIPT_DIR/bl_deps $MFB_DIR/dependencies/bl_deps 
 
+
 cmake $MFB_DIR/source --preset linux-blender-release
 cmake --build $MFB_DIR/build -j $(nproc)
-=======
-cp $SCRIPT_DIR/optix.sh $MFB_DIR/dependencies/optix.sh
-sudo bash $MFB_DIR/dependencies/optix.sh --skip-license --exclude-subdir
-
-sudo rm -rf $MFB_DIR/build/*
-cd $MFB_DIR/build
-cmake $MFB_DIR/source -DPYTHON_EXECUTABLE=python3 -DBOOST_PYTHON_COMPONENT_NAME=python39 -DABI_VERSION=0 -DCMAKE_PREFIX_PATH="$MFB_DIR/dependencies"
-cmake --build . -j $(nproc)
->>>>>>> parent of 4d4427df (linking setups)
 
 rm -rf $MFB_DIR/installs
 mkdir $MFB_DIR/installs
 mkdir $MFB_DIR/installs/openmoonray
-cmake --install . --prefix $MFB_DIR/installs/openmoonray
+cmake --install $MFB_DIR/build --prefix $MFB_DIR/installs/openmoonray
 
 source $MFB_DIR/installs/openmoonray/scripts/setup.sh
 
