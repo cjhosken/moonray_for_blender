@@ -1,4 +1,4 @@
-import bpy
+import bpy, os
 
 bl_info = {
     "name" : "MoonRay For Blender",

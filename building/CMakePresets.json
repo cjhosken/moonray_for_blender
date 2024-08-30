@@ -7,7 +7,9 @@
             "environment": {
                 "DEPS_ROOT": "${sourceParentDir}/dependencies",
                 "BUILD_DIR": "${sourceParentDir}/build",
-                "BOOST_ROOT": "$env{DEPS_ROOT}/bl_deps/boost",
+                "Boost_ROOT": "$env{DEPS_ROOT}/bl_deps/boost",
+                "Boost_LIBRARIES": "$env{DEPS_ROOT}/bl_deps/boost/lib",
+                "Boost_INCLUDE_DIRS":"$env{DEPS_ROOT}/bl_deps/boost/include",
                 "LIBUUID_ROOT": "$env{DEPS_ROOT}",
                 "CPPUNIT_ROOT": "$env{DEPS_ROOT}",
                 "ISPC": "$env{DEPS_ROOT}/bin/ispc",
@@ -18,8 +20,8 @@
                 "OPENSUBDIV_ROOT": "$env{DEPS_ROOT}/bl_deps/opensubdiv",
                 "OPENVDB_ROOT": "$env{DEPS_ROOT}/bl_deps/openvdb",
                 "OPTIX_ROOT": "$env{DEPS_ROOT}/optix",
-                "PXR_USD_LOCATION": "$env{DEPS_ROOT}/usd",
-                "PXR_INCLUDE_DIRS": "$env{DEPS_ROOT}/usd/include",
+                "PXR_USD_LOCATION": "$env{DEPS_ROOT}/bl_deps/usd",
+                "PXR_INCLUDE_DIRS": "$env{DEPS_ROOT}/bl_deps/usd/include",
                 "PYTHON_INCLUDE_DIRS":"$env{DEPS_ROOT}/bl_deps/python/include/python3.11",
                 "PYTHON_LIBRARIES": "$env{DEPS_ROOT}/bl_deps/python/lib",
                 "RANDOM123_ROOT": "$env{DEPS_ROOT}",
@@ -38,7 +40,8 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_INSTALL_PREFIX": "${sourceParentDir}/installs/blender/linux-release",
                 "ABI_VERSION":"0",
-                "BOOST_PYTHON_COMPONENT_NAME":"python311"
+                "BOOST_PYTHON_COMPONENT_NAME":"python311",
+                "BOOST_USE_STATIC_LIBS":"ON"
             },
             "generator": "Unix Makefiles"
         }

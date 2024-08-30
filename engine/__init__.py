@@ -5,8 +5,8 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
     bl_label = "MoonRay"
     bl_info = "Dreamworks' MoonRay Production Renderer integration"
 
-    bl_use_preview = True
-    bl_use_gpu_context = True
+    bl_use_preview = False
+    bl_use_gpu_context = False
     bl_use_materialx = False
 
     bl_delegate_id = "HdMoonrayRendererPlugin"
@@ -14,7 +14,23 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
     @classmethod
     def register(cls):
         import pxr.Plug
-        pxr.Plug.Registry().RegisterPlugins([os.path.join(os.path.expanduser("~"), '.mfb/installs/openmoonray/plugin/pxr')])
+        rel = os.path.join(os.path.expanduser("~"), ".mfb","installs","openmoonray")
+        
+        os.environ["REL"] = rel
+
+        os.environ['LD_LIBRARY_PATH'] = os.path.join(os.path.expanduser("~"), ".mfb", "dependencies", "bl_deps", "boost", "lib") + ":" + os.environ.get('LD_LIBRARY_PATH', '')
+        
+        # Set other environment variables using the expanded `REL` path
+        os.environ["RDL2_DSO_PATH"] = os.path.join(rel, "rdl2dso.proxy") + ":" + os.path.join(rel, "rdl2dso")
+        os.environ['ARRAS_SESSION_PATH'] = os.path.join(rel, "sessions")
+        os.environ["MOONRAY_CLASS_PATH"] = os.path.join(rel, "shader_json")
+
+        # Update PATH and PXR_PLUGINPATH_NAME by expanding the current environment variables
+        os.environ["PATH"] = os.path.join(rel, "bin") + ":" + os.environ.get("PATH", "")
+        
+        os.environ["PXR_PLUGINPATH_NAME"] = os.path.join(rel, "plugin") + ":" + os.path.join(rel, "plugin", "usd") + ":" + os.environ.get("PXR_PLUGINPATH_NAME", "")
+        
+        pxr.Plug.Registry().RegisterPlugins([os.path.join(rel, "plugin", "pxr")])
 
 
     def get_render_settings(self, engine_type):

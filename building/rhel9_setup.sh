@@ -67,7 +67,7 @@ cp $SCRIPT_DIR/pxrConfig.cmake $MFB_DIR/dependencies/pxrConfig.cmake
 cp -r $SCRIPT_DIR/bl_deps $MFB_DIR/dependencies/bl_deps 
 
 export PATH=$MFB_DIR/dependencies/cmake-3.23.1-linux-x86_64/bin:/usr/local/cuda/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$BLENDER_DIR/lib:$BLENDER_DIR/4.1/python/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$BLENDER_DIR/lib:$BLENDER_DIR/4.1/python/lib:$MFB_DIR/dependencies/bl_deps/boost/lib:$LD_LIBRARY_PATH
 
 cmake $MFB_DIR/source --preset linux-blender-release
 cmake --build $MFB_DIR/build -j $(nproc)
