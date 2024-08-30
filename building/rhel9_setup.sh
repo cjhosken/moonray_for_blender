@@ -58,7 +58,6 @@ bash $MFB_DIR/dependencies/optix.sh --skip-license --exclude-subdir
 cp $SCRIPT_DIR/CMakePresets.json $MFB_DIR/source/CMakePresets.json
 
 cp $SCRIPT_DIR/pxrConfig.cmake $MFB_DIR/dependencies/pxrConfig.cmake
-cp $SCRIPT_DIR/OpenImageIOConfig.cmake $MFB_DIR/dependencies/OpenImageIOConfig.cmake
 
 cp -r $SCRIPT_DIR/bl_deps $MFB_DIR/dependencies/bl_deps 
 
@@ -75,7 +74,7 @@ cmake --install $MFB_DIR/build --prefix $MFB_DIR/installs/openmoonray
 
 source $MFB_DIR/installs/openmoonray/scripts/setup.sh
 
-SOURCE_LINE="source $MFB_DIR/installs/openmoonray/scripts/setup.sh; export LD_LIBRARY_PATH=$MFB_DIR/dependencies/bl_deps/boost/lib:$LD_LIBRARY_PATH"
+SOURCE_LINE="source $MFB_DIR/installs/openmoonray/scripts/setup.sh; export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$MFB_DIR/dependencies/bl_deps/openexr/lib:$MFB_DIR/dependencies/bl_deps/imath/lib:$MFB_DIR/dependencies/bl_deps/openimageio/lib:$MFB_DIR/dependencies/bl_deps/python/lib:$MFB_DIR/dependencies/bl_deps/boost/lib:$MFB_DIR/dependencies/bl_deps/opensubdiv/lib:$MFB_DIR/dependencies/bl_deps/openvdb/lib:$MFB_DIR/dependencies/bl_deps/materialx/lib"
 
 # The .bashrc file path
 BASHRC_PATH="$HOME/.bashrc"
