@@ -79,7 +79,7 @@ cmake --install $MFB_DIR/build --prefix $MFB_DIR/installs/openmoonray
 
 source $MFB_DIR/installs/openmoonray/scripts/setup.sh
 
-SOURCE_LINE="source $MFB_DIR/installs/openmoonray/scripts/setup.sh"
+SOURCE_LINE="source $MFB_DIR/installs/openmoonray/scripts/setup.sh; export LD_LIBRARY_PATH=$MFB_DIR/dependencies/bl_deps/boost/lib:$LD_LIBRARY_PATH"
 
 # The .bashrc file path
 BASHRC_PATH="$HOME/.bashrc"
