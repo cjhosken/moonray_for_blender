@@ -7,9 +7,9 @@
             "environment": {
                 "DEPS_ROOT": "${sourceParentDir}/dependencies",
                 "BUILD_DIR": "${sourceParentDir}/build",
-                "Boost_ROOT": "$env{DEPS_ROOT}/bl_deps/boost",
-                "Boost_LIBRARIES": "$env{DEPS_ROOT}/bl_deps/boost/lib",
-                "Boost_INCLUDE_DIRS":"$env{DEPS_ROOT}/bl_deps/boost/include",
+                "BOOST_ROOT": "$env{DEPS_ROOT}/bl_deps/boost",
+                "BOOST_LIBRARIES": "$env{DEPS_ROOT}/bl_deps/boost/lib",
+                "BOOST_INCLUDE_DIRS":"$env{DEPS_ROOT}/bl_deps/boost/include",
                 "LIBUUID_ROOT": "$env{DEPS_ROOT}",
                 "CPPUNIT_ROOT": "$env{DEPS_ROOT}",
                 "ISPC": "$env{DEPS_ROOT}/bin/ispc",

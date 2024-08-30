@@ -6,21 +6,15 @@ while true; do sudo -n true; sleep 60; done 2>/dev/null &
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 DEFAULT_MFB_DIR="$HOME/.mfb"
-DEFAULT_BLENDER_DIR="$HOME/software/blender/blender-4.1.0-linux-x64"
 
 # Initialize variables with default values
 MFB_DIR="$DEFAULT_MFB_DIR"
-BLENDER_DIR="$DEFAULT_BLENDER_DIR"
 
 # Parse command-line arguments using getopts
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --mfb-dir)
             MFB_DIR="$2"
-            shift 2
-            ;;
-        --blender-dir)
-            BLENDER_DIR="$2"
             shift 2
             ;;
         *)
@@ -32,7 +26,6 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 echo "MFB_DIR: $MFB_DIR"
-echo "BLENDER_DIR: $BLENDER_DIR"
 
 mkdir -p "$MFB_DIR"
 cd "$MFB_DIR"
@@ -63,11 +56,14 @@ bash $MFB_DIR/dependencies/optix.sh --skip-license --exclude-subdir
 
 
 cp $SCRIPT_DIR/CMakePresets.json $MFB_DIR/source/CMakePresets.json
+
 cp $SCRIPT_DIR/pxrConfig.cmake $MFB_DIR/dependencies/pxrConfig.cmake
+cp $SCRIPT_DIR/OpenImageIOConfig.cmake $MFB_DIR/dependencies/OpenImageIOConfig.cmake
+
 cp -r $SCRIPT_DIR/bl_deps $MFB_DIR/dependencies/bl_deps 
 
 export PATH=$MFB_DIR/dependencies/cmake-3.23.1-linux-x86_64/bin:/usr/local/cuda/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$BLENDER_DIR/lib:$BLENDER_DIR/4.1/python/lib:$MFB_DIR/dependencies/bl_deps/boost/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$MFB_DIR/dependencies/bl_deps/openexr/lib:$MFB_DIR/dependencies/bl_deps/imath/lib:$MFB_DIR/dependencies/bl_deps/openimageio/lib:$MFB_DIR/dependencies/bl_deps/python/lib:$MFB_DIR/dependencies/bl_deps/boost/lib:$MFB_DIR/dependencies/bl_deps/opensubdiv/lib:$MFB_DIR/dependencies/bl_deps/openvdb/lib:$MFB_DIR/dependencies/bl_deps/materialx/lib:$LD_LIBRARY_PATH
 
 cmake $MFB_DIR/source --preset linux-blender-release
 cmake --build $MFB_DIR/build -j $(nproc)
@@ -95,7 +91,6 @@ else
     echo "$SOURCE_LINE" >> "$BASHRC_PATH"
     echo "The line has been added to .bashrc."
 fi
-
 
 cd $SCRIPT_DIR
 

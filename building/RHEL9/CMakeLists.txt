@@ -105,8 +105,7 @@ ExternalProject_Add(OpenColorIO
 set(CHAIN OpenColorIO)
 
 ExternalProject_Add(OpenImageIO
-    GIT_REPOSITORY https://github.com/OpenImageIO/oiio
-    GIT_TAG 331a323468928c8017ad048b26d47c4e57a724a7 # 2.3.20.0
+    URL https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v2.3.20.0.tar.gz
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DOpenEXR_ROOT=<INSTALL_DIR>

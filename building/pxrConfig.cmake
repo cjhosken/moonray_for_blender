@@ -72,7 +72,7 @@ if (Boost_FOUND)
     message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 
     include_directories(${Boost_INCLUDE_DIRS})
-    link_libraries(${Boost_LIBRARIES})
+    link_directories(${Boost_LIBRARIES})
 else()
     message(FATAL_ERROR "Could not find Boost libraries.")
 endif()
