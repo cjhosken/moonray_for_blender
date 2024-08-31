@@ -78,7 +78,7 @@ cmake --install $MFB_DIR/build --prefix $MFB_DIR/installs/openmoonray
 
 source $MFB_DIR/installs/openmoonray/scripts/setup.sh
 
-SOURCE_LINE="source $MFB_DIR/installs/openmoonray/scripts/setup.sh; export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$MFB_DIR/dependencies/bl_deps/python/lib:$MFB_DIR/dependencies/bl_deps/boost/lib:$MFB_DIR/dependencies/bl_deps/materialx/lib:$MFB_DIR/dependencies/bl_deps/opensubdiv/lib:$MFB_DIR/dependencies/bl_deps/openimageio/lib:$MFB_DIR/dependencies/bl_deps/openvdb/lib:$MFB_DIR/dependencies/bl_deps/openexr/lib:$MFB_DIR/dependencies/bl_deps/imath/lib:$LD_LIBRARY_PATH; export PYTHONHOME=$MFB_DIR/dependencies/bl_deps/python; export PYTHONPATH=$MFB_DIR/dependencies/bl_deps/python/bin/python3.11"
+SOURCE_LINE="export MFB_DIR=$HOME/.mfb; source $MFB_DIR/installs/openmoonray/scripts/setup.sh; export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$MFB_DIR/dependencies/bl_deps/python/lib:$MFB_DIR/dependencies/bl_deps/boost/lib:$MFB_DIR/dependencies/bl_deps/materialx/lib:$MFB_DIR/dependencies/bl_deps/opensubdiv/lib:$MFB_DIR/dependencies/bl_deps/openimageio/lib:$MFB_DIR/dependencies/bl_deps/openvdb/lib:$MFB_DIR/dependencies/bl_deps/openexr/lib:$MFB_DIR/dependencies/bl_deps/imath/lib:$LD_LIBRARY_PATH; export PYTHONHOME=$MFB_DIR/dependencies/bl_deps/python; export PYTHONPATH=$MFB_DIR/dependencies/bl_deps/python/lib/python3.11"
 
 # The .bashrc file path
 BASHRC_PATH="$HOME/.bashrc"
