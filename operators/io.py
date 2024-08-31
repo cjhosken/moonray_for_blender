@@ -71,6 +71,7 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         # Export the current Blender scene to a USD file
         usd_filepath = os.path.splitext(self.filepath)[0] + ".usd"
         is_rdla = os.path.splitext(self.filepath)[1] == ".rdla"
+        is_rdlb = os.path.splitext(self.filepath)[1] == ".rdlb"
 
         bpy.ops.wm.usd_export(filepath=usd_filepath, 
                               selected_objects_only=self.export_selection_only, 
@@ -84,7 +85,7 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         print(f"Exported USD file to {usd_filepath}")
         
         # Convert the USD file to RDLA/RDLB
-        rdla_filepath = self.convert_usd_to_rdla(usd_filepath, is_rdla)
+        rdla_filepath = self.convert_usd_to_rdla(usd_filepath, is_rdla, is_rdlb)
         if rdla_filepath:
             print(f"Converted USD to RDLA: {rdla_filepath}")
             # Delete the temporary USD file
@@ -100,23 +101,41 @@ class MOONRAY_OT_ExportRDL(bpy.types.Operator):
         
         return {'FINISHED'}
     
-    def convert_usd_to_rdla(self, usd_filepath, is_rdla=False):
+    def convert_usd_to_rdla(self, usd_filepath, is_rdla=False, is_rdlb=False):
         # Set up paths
-        extension = ".rdla" if is_rdla else ".rdlb"
+        extension = ".rdla" if is_rdla else ".rdlb" if is_rdlb else ""
 
         rdla_filepath = os.path.splitext(usd_filepath)[0] + extension
         
         # Construct the command to source the setup script and run the conversion
+
         command = f'source {os.path.join(os.path.expanduser("~"), ".mfb/installs/openmoonray/scripts/setup.sh")} && ' \
                   f'{os.path.join(os.path.expanduser("~"), ".mfb/installs/openmoonray/bin/hd_usd2rdl")} -in {usd_filepath} -out {rdla_filepath}'
         
         try:
             # Run the command in a shell
             subprocess.run(command, shell=True, check=True, executable="/bin/bash")
+
+            texture_path = os.path.join(os.path.dirname(rdla_filepath), "textures")
+            maketx_path = os.path.join(os.path.expanduser("~"), ".mfb/dependencies/bl_deps/openimageio/bin/maketx")
+
+            for file in os.listdir(texture_path):
+                file_path = os.path.join(texture_path, file)
+
+                if not file.lower().endswith(('.jpg', '.png', '.tif', '.tiff', '.exr')):
+                    print(f"Skipping non-image file: {file}")
+                    continue
+
+                # Define the command to convert to .tx
+                maketx_command = [maketx_path, file_path]
+
+                subprocess.run(maketx_command, shell=True, check=True, executable="/bin/bash")
+
             return rdla_filepath
         except subprocess.CalledProcessError as e:
             print(f"Error during USD to RDLA conversion: {e}")
             return None
+        
     
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)

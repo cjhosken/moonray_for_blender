@@ -7,7 +7,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
 
     bl_use_preview = True
     bl_use_gpu_context = True
-    bl_use_materialx = True
+    bl_use_materialx = False
 
     bl_delegate_id = "HdMoonrayRendererPlugin"
 
@@ -28,13 +28,13 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
         
         os.environ["PXR_PLUGINPATH_NAME"] = os.path.join(rel, "plugin") + ":" + os.path.join(rel, "plugin", "usd") + ":" + os.environ.get("PXR_PLUGINPATH_NAME", "")
         
-        os.environ["HDMOONRAY_DEBUG_MODE"] = "1"
-        os.environ["HDMOONRAY_DEBUG"] = "1"
-        os.environ["HDMOONRAY_INFO"] = "1"
-        os.environ["HDMOONRAY_DISABLE"]="0"
-        os.environ["HDMOONRAY_RDLA_OUTPUT"]="temp"
+        #os.environ["HDMOONRAY_DEBUG_MODE"] = "1"
+        #os.environ["HDMOONRAY_DEBUG"] = "1"
+        #os.environ["HDMOONRAY_INFO"] = "1"
+        #os.environ["HDMOONRAY_DISABLE"]="0"
+        #os.environ["HDMOONRAY_RDLA_OUTPUT"]="temp"
 
-        pxr.Plug.Registry().RegisterPlugins([os.path.join(rel, "plugin", "pxr")])
+        pxr.Plug.Registry().RegisterPlugins([os.path.join(rel, "plugin")])
 
 
     def get_render_settings(self, engine_type):
