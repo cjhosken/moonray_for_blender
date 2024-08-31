@@ -46,13 +46,13 @@ link_libraries(${PXR_LIBRARIES})
 
 set(BL_PYTHON_ROOT "$ENV{HOME}/.mfb/dependencies/bl_deps/python")
 
-set(PYTHON_INCLUDE_DIRS "${BL_PYTHON_ROOT}/include/python3.11")
-set(PYTHON_LIBRARIES "${BL_PYTHON_ROOT}/lib/libpython3.11.a")
+set(Python_INCLUDE_DIRS "${BL_PYTHON_ROOT}/include/python3.11")
+set(Python_LIBRARIES "${BL_PYTHON_ROOT}/lib/libpython3.11.a")
 
-message(STATUS "PYTHON_INCLUDE_DIRS:" ${PYTHON_INCLUDE_DIRS})
-message(STATUS "PYTHON_LIBRARIES:" ${PYTHON_LIBRARIES})
-include_directories(${PYTHON_INCLUDE_DIRS})
-link_libraries(${PYTHON_LIBRARIES})
+message(STATUS "Python_INCLUDE_DIRS:" ${Python_INCLUDE_DIRS})
+message(STATUS "Python_LIBRARIES:" ${Python_LIBRARIES})
+include_directories(${Python_INCLUDE_DIRS})
+link_libraries(${Python_LIBRARIES})
 
 # Find and configure Boost
 find_package(Boost 1.82 REQUIRED COMPONENTS python311 iostreams regex system date_time chrono)

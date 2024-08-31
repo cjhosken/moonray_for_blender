@@ -12,7 +12,7 @@ project(openmoonray_third_party)
 include(ExternalProject)
 
 set(THIS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(InstallRoot /usr/local CACHE FILEPATH "Install root for dependencies")
+set(InstallRoot ~/.mfb/dependencies CACHE FILEPATH "Install root for dependencies")
 
 ExternalProject_Add(JsonCpp
     GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
@@ -25,31 +25,6 @@ ExternalProject_Add(JsonCpp
         -DJSONCPP_LIB_BUILD_SHARED:BOOL=ON
 )
 set(CHAIN JsonCpp)
-
-ExternalProject_Add(OpenSubdiv
-    GIT_REPOSITORY https://github.com/PixarAnimationStudios/OpenSubdiv
-    GIT_TAG 8ffa2b6566be10209529d7a0d1db02a0796b160c # v3_5_0
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-      -DCMAKE_BUILD_TYPE=Release
-      -DPYTHON_EXECUTABLE=/usr/bin/python3
-      -DNO_PTEX=1 -DNO_OMP=1 -DNO_TBB=1 -DNO_CUDA=1 -DNO_GLFW_X11=1 -DNO_DOC=1
-      -DNO_OPENCL=1 -DNO_CLEW=1 -DNO_REGRESSION=1 -DNO_EXAMPLES=1 -DNO_TUTORIALS=1 -DNO_GLTESTS=1 
-      -DNO_MACOS_FRAMEWORK=1 -DNO_METAL=1 -DNO_TESTS=1 
-    DEPENDS ${CHAIN}
-)
-set(CHAIN OpenSubdiv)
-
-ExternalProject_Add(OpenEXR
-    URL https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.2.1.tar.gz
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DBUILD_SHARED_LIBS=ON
-    DEPENDS ${CHAIN}
-)
-set(CHAIN OpenEXR)
 
 ExternalProject_Add(Random123
     GIT_REPOSITORY https://github.com/DEShawResearch/random123
@@ -71,45 +46,3 @@ ExternalProject_Add(ISPC
     DEPENDS ${CHAIN}
 )
 set(CHAIN ISPC)
-
-ExternalProject_Add(embree
-    GIT_REPOSITORY https://github.com/embree/embree
-    GIT_TAG 341ef8c45d1ae072ead1ab65cd76e88b03d9302c # v4.2.0
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DEMBREE_ISPC_EXECUTABLE=<INSTALL_DIR>/bin/ispc
-        -DEMBREE_ISPC_SUPPORT=ON
-        -DEMBREE_IGNORE_INVALID_RAYS=ON
-        -DEMBREE_RAY_MASK=ON
-        -DEMBREE_MAX_ISA=AVX512
-        -DEMBREE_TUTORIALS=OFF
-        -DBUILD_SHARED_LIBS=ON
-    DEPENDS ${CHAIN}
-)
-set(CHAIN embree)
-
-ExternalProject_Add(OpenColorIO
-    GIT_REPOSITORY https://github.com/AcademySoftwareFoundation/OpenColorIO
-    GIT_TAG 056b7b0cb0d087961e9dba75104820e44faf52a1 # v2.0.2
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DBUILD_SHARED_LIBS=ON
-        -DOCIO_BUILD_STATIC=OFF
-        -DCMAKE_CXX_STANDARD=17
-    DEPENDS ${CHAIN}
-)
-set(CHAIN OpenColorIO)
-
-ExternalProject_Add(OpenImageDenoise
-    URL https://github.com/OpenImageDenoise/oidn/releases/download/v2.0.1/oidn-2.0.1.src.tar.gz
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DISPC_EXECUTABLE=<INSTALL_DIR>/bin/ispc
-        -DTBB_ROOT=<INSTALL_DIR>
-        -DOIDN_APPS=OFF
-    DEPENDS ${CHAIN}
-)
-set(CHAIN OpenImageDenoise)
