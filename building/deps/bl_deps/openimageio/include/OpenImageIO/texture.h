@@ -16,6 +16,8 @@
 #include <OpenImageIO/varyingref.h>
 #include <OpenImageIO/vecparam.h>
 
+#include <Imath/ImathVec.h>
+
 
 // Define symbols that let client applications determine if newly added
 // features are supported.

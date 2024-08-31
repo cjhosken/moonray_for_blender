@@ -55,9 +55,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 link_libraries(${PYTHON_LIBRARIES})
 
 # Find and configure Boost
-find_package(Boost 1.82 REQUIRED COMPONENTS python311 iostreams regex)
-
-
+find_package(Boost 1.82 REQUIRED COMPONENTS python311 iostreams regex system date_time chrono)
 
 if (Boost_FOUND)
     # Set to use static Boost libraries

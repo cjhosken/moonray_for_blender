@@ -42,13 +42,11 @@ ExternalProject_Add(OpenSubdiv
 set(CHAIN OpenSubdiv)
 
 ExternalProject_Add(OpenEXR
-    GIT_REPOSITORY https://github.com/AcademySoftwareFoundation/openexr
-    GIT_TAG 8bc3741131db146ad08a5b83af9e6e48f0e94a03 # v2.5.7
-    PATCH_COMMAND patch IlmBase/Half/CMakeLists.txt ${THIS_DIR}/../Imath_include_paths.patch
+    URL https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.2.1.tar.gz
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DBUILD_SHARED_LIBS=OFF
+        -DBUILD_SHARED_LIBS=ON
     DEPENDS ${CHAIN}
 )
 set(CHAIN OpenEXR)
@@ -103,18 +101,6 @@ ExternalProject_Add(OpenColorIO
     DEPENDS ${CHAIN}
 )
 set(CHAIN OpenColorIO)
-
-ExternalProject_Add(OpenImageIO
-    URL https://github.com/AcademySoftwareFoundation/OpenImageIO/archive/refs/tags/v2.3.20.0.tar.gz
-    INSTALL_DIR ${InstallRoot}
-    CMAKE_ARGS
-        -DOpenEXR_ROOT=<INSTALL_DIR>
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-        -DUSE_QT=0
-        -DUSE_PYTHON=0
-    DEPENDS ${CHAIN}
-)
-set(CHAIN OpenImageIO)
 
 ExternalProject_Add(OpenImageDenoise
     URL https://github.com/OpenImageDenoise/oidn/releases/download/v2.0.1/oidn-2.0.1.src.tar.gz

@@ -5,9 +5,9 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
     bl_label = "MoonRay"
     bl_info = "Dreamworks' MoonRay Production Renderer integration"
 
-    bl_use_preview = False
-    bl_use_gpu_context = False
-    bl_use_materialx = False
+    bl_use_preview = True
+    bl_use_gpu_context = True
+    bl_use_materialx = True
 
     bl_delegate_id = "HdMoonrayRendererPlugin"
 
@@ -17,8 +17,6 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
         rel = os.path.join(os.path.expanduser("~"), ".mfb","installs","openmoonray")
         
         os.environ["REL"] = rel
-
-        os.environ['LD_LIBRARY_PATH'] = os.path.join(os.path.expanduser("~"), ".mfb", "dependencies", "bl_deps", "boost", "lib") + ":" + os.environ.get('LD_LIBRARY_PATH', '')
         
         # Set other environment variables using the expanded `REL` path
         os.environ["RDL2_DSO_PATH"] = os.path.join(rel, "rdl2dso.proxy") + ":" + os.path.join(rel, "rdl2dso")
@@ -32,7 +30,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
         
         os.environ["HDMOONRAY_DEBUG_MODE"] = "1"
         os.environ["HDMOONRAY_DEBUG"] = "1"
-        #os.environ["HDMOONRAY_INFO"] = "1"
+        os.environ["HDMOONRAY_INFO"] = "1"
         os.environ["HDMOONRAY_DISABLE"]="1"
         os.environ["HDMOONRAY_RDLA_OUTPUT"]="temp"
 

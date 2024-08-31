@@ -19,7 +19,7 @@
                 "LUA_DIR": "$env{DEPS_ROOT}",
                 "OPENSUBDIV_ROOT": "$env{DEPS_ROOT}/bl_deps/opensubdiv",
                 "OPENVDB_ROOT": "$env{DEPS_ROOT}/bl_deps/openvdb",
-                "OPTIX_ROOT": "$env{DEPS_ROOT}/optix",
+                "OPTIX_ROOT": "$env{DEPS_ROOT}",
                 "PXR_USD_LOCATION": "$env{DEPS_ROOT}/bl_deps/usd",
                 "PXR_INCLUDE_DIRS": "$env{DEPS_ROOT}/bl_deps/usd/include",
                 "PYTHON_INCLUDE_DIRS":"$env{DEPS_ROOT}/bl_deps/python/include/python3.11",
