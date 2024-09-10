@@ -66,8 +66,6 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$MFB_DIR/dependencies/bl_deps/pytho
 
 unset PYTHONPATH
 unset PYTHONHOME
-#export PYTHONHOME=$MFB_DIR/dependencies/bl_deps/python
-#export PYTHONPATH=$MFB_DIR/dependencies/bl_deps/python/lib/python3.11:$MFB_DIR/dependencies/bl_deps/python/lib/python3.11/site-packages
 
 cmake $MFB_DIR/source --preset linux-blender-release
 cmake --build $MFB_DIR/build -j $(nproc)

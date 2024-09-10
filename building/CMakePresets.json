@@ -14,6 +14,7 @@
                 "CPPUNIT_ROOT": "$env{DEPS_ROOT}",
                 "ISPC": "$env{DEPS_ROOT}/bin/ispc",
                 "JSONCPP_ROOT": "$env{DEPS_ROOT}",
+                "EMBREE_ROOT": "$env{DEPS_ROOT}",
                 "LIBCURL_ROOT": "$env{DEPS_ROOT}",
                 "LOG4CPLUS_ROOT": "$env{DEPS_ROOT}",
                 "LUA_DIR": "$env{DEPS_ROOT}",

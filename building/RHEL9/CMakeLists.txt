@@ -15,8 +15,7 @@ set(THIS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(InstallRoot ~/.mfb/dependencies CACHE FILEPATH "Install root for dependencies")
 
 ExternalProject_Add(JsonCpp
-    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
-    GIT_TAG 5defb4ed1a4293b8e2bf641e16b156fb9de498cc # 1.9.5
+    URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz
     INSTALL_DIR ${InstallRoot}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -27,8 +26,7 @@ ExternalProject_Add(JsonCpp
 set(CHAIN JsonCpp)
 
 ExternalProject_Add(Random123
-    GIT_REPOSITORY https://github.com/DEShawResearch/random123
-    GIT_TAG 726a093cd9a73f3ec3c8d7a70ff10ed8efec8d13 # v1.14.0
+    URL https://github.com/DEShawResearch/random123/archive/refs/tags/v1.14.0.tar.gz
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
@@ -46,3 +44,19 @@ ExternalProject_Add(ISPC
     DEPENDS ${CHAIN}
 )
 set(CHAIN ISPC)
+
+ExternalProject_Add(embree
+    URL https://github.com/RenderKit/embree/archive/refs/tags/v4.2.0.tar.gz
+    INSTALL_DIR ${InstallRoot}
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+        -DEMBREE_ISPC_EXECUTABLE=<INSTALL_DIR>/bin/ispc
+        -DEMBREE_ISPC_SUPPORT=ON
+        -DEMBREE_IGNORE_INVALID_RAYS=ON
+        -DEMBREE_RAY_MASK=ON
+        -DEMBREE_MAX_ISA=AVX512
+        -DEMBREE_TUTORIALS=OFF
+        -DBUILD_SHARED_LIBS=ON
+    DEPENDS ${CHAIN}
+)
+set(CHAIN embree)
