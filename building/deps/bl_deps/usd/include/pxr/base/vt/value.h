@@ -36,7 +36,9 @@
 #include "pxr/base/arch/hints.h"
 #include "pxr/base/arch/pragmas.h"
 #include "pxr/base/tf/anyUniquePtr.h"
+#include "pxr/base/tf/delegatedCountPtr.h"
 #include "pxr/base/tf/pointerAndBits.h"
+#include "pxr/base/tf/preprocessorUtilsLite.h"
 #include "pxr/base/tf/safeTypeCompare.h"
 #include "pxr/base/tf/stringUtils.h"
 #include "pxr/base/tf/tf.h"
@@ -47,8 +49,6 @@
 #include "pxr/base/vt/streamOut.h"
 #include "pxr/base/vt/traits.h"
 #include "pxr/base/vt/types.h"
-
-#include <boost/intrusive_ptr.hpp>
 
 #include <iosfwd>
 #include <typeinfo>
@@ -179,10 +179,10 @@ class VtValue
         T _obj;
         mutable std::atomic<int> _refCount;
 
-        friend inline void intrusive_ptr_add_ref(_Counted const *d) {
+        friend inline void TfDelegatedCountIncrement(_Counted const *d) {
             d->_refCount.fetch_add(1, std::memory_order_relaxed);
         }
-        friend inline void intrusive_ptr_release(_Counted const *d) {
+        friend inline void TfDelegatedCountDecrement(_Counted const *d) noexcept {
             if (d->_refCount.fetch_sub(1, std::memory_order_release) == 1) {
                 std::atomic_thread_fence(std::memory_order_acquire);
                 delete d;
@@ -197,14 +197,12 @@ class VtValue
     typedef std::aligned_storage<
         /* size */_MaxLocalSize, /* alignment */_MaxLocalSize>::type _Storage;
 
-    // In C++17, std::is_trivially_copy_assignable<T> could be used in place of
-    // std::is_trivially_assignable
     template <class T>
     using _IsTriviallyCopyable = std::integral_constant<bool,
-        std::is_trivially_default_constructible<T>::value &&
-        std::is_trivially_copyable<T>::value &&
-        std::is_trivially_assignable<T&, const T&>::value &&
-        std::is_trivially_destructible<T>::value>;
+        std::is_trivially_default_constructible_v<T> &&
+        std::is_trivially_copyable_v<T> &&
+        std::is_trivially_copy_assignable_v<T> &&
+        std::is_trivially_destructible_v<T>>;
 
     // Metafunction that returns true if T should be stored locally, false if it
     // should be stored remotely.
@@ -765,30 +763,31 @@ class VtValue
 
     ////////////////////////////////////////////////////////////////////////
     // Remote-storage type info implementation.  The container is an
-    // intrusive_ptr to an object holder: _Counted<T>.
+    // TfDelegatedCountPtr to an object holder: _Counted<T>.
     template <class T>
     struct _RemoteTypeInfo : _TypeInfoImpl<
-        T,                                  // type
-        boost::intrusive_ptr<_Counted<T> >, // container
-        _RemoteTypeInfo<T>                  // CRTP
+        T,                                   // type
+        TfDelegatedCountPtr<_Counted<T>>, // container
+        _RemoteTypeInfo<T>                   // CRTP
         >
     {
         constexpr _RemoteTypeInfo()
             : _TypeInfoImpl<
-                  T, boost::intrusive_ptr<_Counted<T>>, _RemoteTypeInfo<T>>()
+                  T, TfDelegatedCountPtr<_Counted<T>>, _RemoteTypeInfo<T>>()
         {}
 
-        typedef boost::intrusive_ptr<_Counted<T> > Ptr;
+        using Ptr = TfDelegatedCountPtr<_Counted<T>>;
         // Get returns object stored in the pointed-to _Counted<T>.
         static T &_GetMutableObj(Ptr &ptr) {
-            if (!ptr->IsUnique())
-                ptr.reset(new _Counted<T>(ptr->Get()));
+            if (!ptr->IsUnique()) {
+                ptr = TfMakeDelegatedCountPtr<_Counted<T>>(ptr->Get());
+            }
             return ptr->GetMutable();
         }
         static T const &_GetObj(Ptr const &ptr) { return ptr->Get(); }
         // PlaceCopy() allocates a new _Counted<T> with a copy of the object.
         static void _PlaceCopy(Ptr *dst, T const &src) {
-            new (dst) Ptr(new _Counted<T>(src));
+            new (dst) Ptr(TfDelegatedCountIncrementTag, new _Counted<T>(src));
         }
     };
 
@@ -1204,7 +1203,8 @@ public:
     template <typename T>
     static VtValue Cast(VtValue const &val) {
         VtValue ret = val;
-        return ret.Cast<T>();
+        ret.Cast<T>();
+        return ret;
     }
 
     /// Return a VtValue holding \c val cast to same type that \c other is
@@ -1387,18 +1387,16 @@ private:
     }
 
     template <class T>
-    inline std::enable_if_t<VtIsKnownValueType_Workaround<T>::value, bool>
+    inline bool
     _TypeIs() const {
-        return _info->knownTypeIndex == VtGetKnownValueTypeIndex<T>() ||
-            ARCH_UNLIKELY(_IsProxy() && _TypeIsImpl(typeid(T)));
-    }
-
-    template <class T>
-    inline std::enable_if_t<!VtIsKnownValueType_Workaround<T>::value, bool>
-    _TypeIs() const {
-        std::type_info const &t = typeid(T);
-        return TfSafeTypeCompare(_info->typeInfo, t) ||
-            ARCH_UNLIKELY(_IsProxy() && _TypeIsImpl(t));
+        if constexpr (VtIsKnownValueType_Workaround<T>::value) {
+            return _info->knownTypeIndex == VtGetKnownValueTypeIndex<T>() ||
+                ARCH_UNLIKELY(_IsProxy() && _TypeIsImpl(typeid(T)));
+        } else {
+            std::type_info const &t = typeid(T);
+            return TfSafeTypeCompare(_info->typeInfo, t) ||
+                ARCH_UNLIKELY(_IsProxy() && _TypeIsImpl(t));
+        }
     }
 
     VT_API bool _TypeIsImpl(std::type_info const &queriedType) const;
@@ -1538,16 +1536,15 @@ Vt_DefaultValueFactory<T>::Invoke() {
 // to construct zeroed out vectors, matrices, and quaternions by
 // explicitly instantiating the factory for these types. 
 //
-#define _VT_DECLARE_ZERO_VALUE_FACTORY(r, unused, elem)                 \
+#define _VT_DECLARE_ZERO_VALUE_FACTORY(unused, elem)                    \
 template <>                                                             \
 VT_API Vt_DefaultValueHolder Vt_DefaultValueFactory<VT_TYPE(elem)>::Invoke();
 
-BOOST_PP_SEQ_FOR_EACH(_VT_DECLARE_ZERO_VALUE_FACTORY,
-                      unused,
-                      VT_VEC_VALUE_TYPES
-                      VT_MATRIX_VALUE_TYPES
-                      VT_QUATERNION_VALUE_TYPES
-                      VT_DUALQUATERNION_VALUE_TYPES)
+TF_PP_SEQ_FOR_EACH(_VT_DECLARE_ZERO_VALUE_FACTORY, ~,
+                   VT_VEC_VALUE_TYPES
+                   VT_MATRIX_VALUE_TYPES
+                   VT_QUATERNION_VALUE_TYPES
+                   VT_DUALQUATERNION_VALUE_TYPES)
 
 #undef _VT_DECLARE_ZERO_VALUE_FACTORY
 

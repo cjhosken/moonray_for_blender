@@ -39,6 +39,7 @@
 
 #include "pxr/base/arch/demangle.h"
 #include "pxr/base/arch/inttypes.h"
+#include "pxr/base/arch/pragmas.h"
 #include "pxr/base/gf/half.h"
 #include "pxr/base/gf/matrix2d.h"
 #include "pxr/base/gf/matrix3d.h"
@@ -67,7 +68,6 @@
 #include "pxr/base/vt/dictionary.h"
 #include "pxr/base/vt/value.h"
 
-#include <boost/preprocessor/seq/for_each.hpp>
 #include <iosfwd>
 #include <list>
 #include <map>
@@ -245,14 +245,14 @@ enum SdfAuthoringError
 #define _SDF_UNITSLIST_ENUM(elem) TF_PP_CAT(TF_PP_CAT(Sdf, \
                                     _SDF_UNITSLIST_CATEGORY(elem)), Unit)
 
-#define _SDF_DECLARE_UNIT_ENUMERANT(r, tag, elem) \
+#define _SDF_DECLARE_UNIT_ENUMERANT(tag, elem) \
     TF_PP_CAT(Sdf ## tag ## Unit, _SDF_UNIT_TAG(elem)),
 
 #define _SDF_DECLARE_UNIT_ENUM(elem)                     \
 enum _SDF_UNITSLIST_ENUM(elem) {                         \
-    BOOST_PP_SEQ_FOR_EACH(_SDF_DECLARE_UNIT_ENUMERANT,   \
-                          _SDF_UNITSLIST_CATEGORY(elem), \
-                          _SDF_UNITSLIST_TUPLES(elem))   \
+    TF_PP_SEQ_FOR_EACH(_SDF_DECLARE_UNIT_ENUMERANT,      \
+                       _SDF_UNITSLIST_CATEGORY(elem),    \
+                       _SDF_UNITSLIST_TUPLES(elem))      \
 };
 
 #define _SDF_FOR_EACH_UNITS_IMPL(macro, ...)             \
@@ -260,7 +260,13 @@ enum _SDF_UNITSLIST_ENUM(elem) {                         \
 #define _SDF_FOR_EACH_UNITS(macro, args)                 \
     _SDF_FOR_EACH_UNITS_IMPL(macro, TF_PP_EAT_PARENS(args))
 
+// On Windows this call to _SDF_FOR_EACH_UNITS generates a C4003 warning.
+// This is harmless, but we disable the warning here so that external
+// projects that include this header don't run into it as well.
+ARCH_PRAGMA_PUSH
+ARCH_PRAGMA_MACRO_TOO_FEW_ARGUMENTS
 _SDF_FOR_EACH_UNITS(_SDF_DECLARE_UNIT_ENUM, _SDF_UNITS)
+ARCH_PRAGMA_POP
 
 /// A map of mapper parameter names to parameter values.
 typedef std::map<std::string, VtValue> SdfMapperParametersMap;
@@ -276,6 +282,13 @@ typedef std::map<std::string, std::vector<std::string> > SdfVariantsMap;
 //        clients, so SdfPath::FastLessThan is explicitly omitted as
 //        the Compare template parameter.
 typedef std::map<SdfPath, SdfPath> SdfRelocatesMap;
+
+/// A single relocate specifying a source SdfPath and a target SdfPath for a 
+/// relocation.
+typedef std::pair<SdfPath, SdfPath> SdfRelocate;
+
+/// A vector of relocation source path to target path pairs.
+typedef std::vector<SdfRelocate> SdfRelocates;
 
 /// A map from sample times to sample values.
 typedef std::map<double, VtValue> SdfTimeSampleMap;
@@ -381,7 +394,7 @@ struct SdfValueTypeTraits<char[N]> {
     static const bool IsValueType = true;
 };
 
-#define SDF_DECLARE_VALUE_TYPE_TRAITS(r, unused, elem)                      \
+#define SDF_DECLARE_VALUE_TYPE_TRAITS(unused, elem)                         \
 template <>                                                                 \
 struct SdfValueTypeTraits<SDF_VALUE_CPP_TYPE(elem)> {                       \
     static const bool IsValueType = true;                                   \
@@ -391,7 +404,7 @@ struct SdfValueTypeTraits<SDF_VALUE_CPP_ARRAY_TYPE(elem)> {                 \
     static const bool IsValueType = true;                                   \
 };
 
-BOOST_PP_SEQ_FOR_EACH(SDF_DECLARE_VALUE_TYPE_TRAITS, ~, SDF_VALUE_TYPES);
+TF_PP_SEQ_FOR_EACH(SDF_DECLARE_VALUE_TYPE_TRAITS, ~, SDF_VALUE_TYPES);
 
 /// Convert \p dict to a valid metadata dictionary for scene description.  Valid
 /// metadata dictionaries have values that are any of SDF_VALUE_TYPES (or
@@ -454,6 +467,11 @@ std::ostream & operator<<( std::ostream &out, const SdfSpecifier &spec );
 SDF_API 
 std::ostream & operator<<( std::ostream &out,
                            const SdfRelocatesMap &reloMap );
+
+/// Writes the string representation of \c SdfRelocates to \a out.
+SDF_API 
+std::ostream & operator<<( std::ostream &out,
+                           const SdfRelocates &relocates );
 
 /// Writes the string representation of \c SdfTimeSampleMap to \a out.
 SDF_API 

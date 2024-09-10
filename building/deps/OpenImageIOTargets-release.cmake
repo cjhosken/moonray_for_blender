@@ -10,23 +10,23 @@ set(OIIO_ROOT "$ENV{HOME}/.mfb/dependencies/bl_deps/openimageio")
 # Import target "OpenImageIO::OpenImageIO_Util" for configuration "Release"
 set_property(TARGET OpenImageIO::OpenImageIO_Util APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(OpenImageIO::OpenImageIO_Util PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${OIIO_ROOT}/lib/libOpenImageIO_Util.so.2.5.6"
-  IMPORTED_SONAME_RELEASE "libOpenImageIO_Util.so.2.5"
+  IMPORTED_LOCATION_RELEASE "${OIIO_ROOT}/lib/libOpenImageIO_Util.so.2.5.11"
+  IMPORTED_SONAME_RELEASE "libOpenImageIO_Util.so"
   )
 
 list(APPEND _cmake_import_check_targets OpenImageIO::OpenImageIO_Util )
-list(APPEND _cmake_import_check_files_for_OpenImageIO::OpenImageIO_Util "${OIIO_ROOT}/lib/libOpenImageIO_Util.so.2.5.6" )
+list(APPEND _cmake_import_check_files_for_OpenImageIO::OpenImageIO_Util "${OIIO_ROOT}/lib/libOpenImageIO_Util.so.2.5.11" )
 
 # Import target "OpenImageIO::OpenImageIO" for configuration "Release"
 set_property(TARGET OpenImageIO::OpenImageIO APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(OpenImageIO::OpenImageIO PROPERTIES
   IMPORTED_LINK_DEPENDENT_LIBRARIES_RELEASE "TBB::tbb;OpenColorIO::OpenColorIO"
-  IMPORTED_LOCATION_RELEASE "${OIIO_ROOT}/lib/libOpenImageIO.so.2.5.6"
-  IMPORTED_SONAME_RELEASE "libOpenImageIO.so.2.5"
+  IMPORTED_LOCATION_RELEASE "${OIIO_ROOT}/lib/libOpenImageIO.so.2.5.11"
+  IMPORTED_SONAME_RELEASE "libOpenImageIO.so"
   )
 
 list(APPEND _cmake_import_check_targets OpenImageIO::OpenImageIO )
-list(APPEND _cmake_import_check_files_for_OpenImageIO::OpenImageIO "${OIIO_ROOT}/lib/libOpenImageIO.so.2.5.6" )
+list(APPEND _cmake_import_check_files_for_OpenImageIO::OpenImageIO "${OIIO_ROOT}/lib/libOpenImageIO.so.2.5.11" )
 
 # Import target "OpenImageIO::iconvert" for configuration "Release"
 #set_property(TARGET OpenImageIO::iconvert APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)

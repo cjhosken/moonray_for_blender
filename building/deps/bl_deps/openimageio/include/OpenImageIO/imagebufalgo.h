@@ -404,7 +404,7 @@ ROI OIIO_API text_size (string_view text, int fontsize=16,
 ///             The total number of channels that will be set up in the
 ///             `dst` image.
 /// @param  channelorder
-///             For each channel in `dst`, the index of he `src` channel
+///             For each channel in `dst`, the index of the `src` channel
 ///             from which to copy. Any `channelorder[i]` < 0 indicates that
 ///             the channel `i` should be filled with constant value
 ///             `channelvalues[i]` rather than copy any channel from `src`.
@@ -1717,15 +1717,15 @@ enum NonFiniteFixMode
     NONFINITE_BLACK = 1,    ///< Replace non-finite values with 0.0.
     NONFINITE_BOX3 = 2,     ///< Replace non-finite values with the average
                             ///< value of any finite pixels in a 3x3 window.
-    NONFINITE_ERROR = 100,  ///< EReturn false (error), but don't change any
+    NONFINITE_ERROR = 100,  ///< Return false (error), but don't change any
                             ///< values, if any nonfinite values are found.
 };
 
 /// `fixNonFinite()` returns in image containing the values of `src` (within
-/// the ROI), while repairing  any non-finite (NaN/Inf) pixels. If
-/// pixelsFixed is not nullptr, store in it the number of pixels that
+/// the ROI), while repairing any non-finite (NaN/Inf) pixels. If
+/// `pixelsFixed` is not nullptr, store in it the number of pixels that
 /// contained non-finite value.  It is permissible to operate in-place (with
-/// `src` and  `dst` referring to the same image).
+/// `src` and `dst` referring to the same image).
 ///
 /// How the non-finite values are repaired is specified by one of the `mode`
 /// parameter, which is an enum of `NonFiniteFixMode`.

@@ -18,7 +18,6 @@
 
 #include <Imath/ImathVec.h>
 
-
 // Define symbols that let client applications determine if newly added
 // features are supported.
 #define OIIO_TEXTURESYSTEM_SUPPORTS_CLOSE 1
@@ -28,6 +27,7 @@
 #define OIIO_TEXTURESYSTEM_SUPPORTS_GETATTRIBUTETYPE 1
 
 #define OIIO_TEXTURESYSTEM_SUPPORTS_STOCHASTIC 1
+#define OIIO_TEXTURESYSTEM_SUPPORTS_DECODE_BY_USTRINGHASH 1
 
 #ifndef INCLUDED_IMATHVEC_H
 // Placeholder declaration for Imath::V3f if no Imath headers have been
@@ -95,6 +95,7 @@ enum class Wrap {
 /// "default", "black", "clamp", "periodic", "mirror".
 OIIO_API Wrap decode_wrapmode (const char *name);
 OIIO_API Wrap decode_wrapmode (ustring name);
+OIIO_API Wrap decode_wrapmode (ustringhash name);
 
 /// Utility: Parse a single wrap mode (e.g., "periodic") or a
 /// comma-separated wrap modes string (e.g., "black,clamp") into
@@ -280,6 +281,10 @@ public:
     {
         return (Wrap)Tex::decode_wrapmode(name);
     }
+    static Wrap decode_wrapmode(ustringhash name)
+    {
+        return (Wrap)Tex::decode_wrapmode(name);
+    }
 
     /// Utility: Parse a single wrap mode (e.g., "periodic") or a
     /// comma-separated wrap modes string (e.g., "black,clamp") into
@@ -429,6 +434,10 @@ public:
         return (Wrap)Tex::decode_wrapmode(name);
     }
     static Wrap decode_wrapmode(ustring name)
+    {
+        return (Wrap)Tex::decode_wrapmode(name);
+    }
+    static Wrap decode_wrapmode(ustringhash name)
     {
         return (Wrap)Tex::decode_wrapmode(name);
     }

@@ -44,9 +44,13 @@
 //
 #define OIIO_VERSION_MAJOR 2
 #define OIIO_VERSION_MINOR 5
-#define OIIO_VERSION_PATCH 6
+#define OIIO_VERSION_PATCH 11
 #define OIIO_VERSION_TWEAK 0
 #define OIIO_VERSION_RELEASE_TYPE 
+
+// Preprocessor utility: stringize
+#define OIIO_STRINGIZE_HELPER(a) #a
+#define OIIO_STRINGIZE(a) OIIO_STRINGIZE_HELPER(a)
 
 // Construct a single integer version number from major, minor, patch.
 // Example of its use:

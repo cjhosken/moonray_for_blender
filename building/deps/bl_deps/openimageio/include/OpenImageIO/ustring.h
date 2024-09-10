@@ -1032,15 +1032,16 @@ inline ustring::ustring(ustringhash hash)
 
 
 /// ustring string literal operator
-inline ustring operator""_us(const char* str, std::size_t len)
+inline ustring
+operator""_us(const char* str, std::size_t len)
 {
     return ustring(str, len);
 }
 
 
 /// ustringhash string literal operator
-OIIO_DEVICE_CONSTEXPR ustringhash operator""_ush(const char* str,
-                                                 std::size_t len)
+OIIO_DEVICE_CONSTEXPR ustringhash
+operator""_ush(const char* str, std::size_t len)
 {
     return ustringhash(str, len);
 }
@@ -1160,8 +1161,8 @@ FMT_BEGIN_NAMESPACE
 
 template<> struct formatter<OIIO::ustring> : formatter<fmt::string_view, char> {
     template<typename FormatContext>
-    auto format(const OIIO::ustring& u, FormatContext& ctx)
-        -> decltype(ctx.out()) const
+    auto format(const OIIO::ustring& u,
+                FormatContext& ctx) OIIO_FMT_CUSTOM_FORMATTER_CONST
     {
         return formatter<fmt::string_view, char>::format({ u.data(), u.size() },
                                                          ctx);
@@ -1171,8 +1172,8 @@ template<> struct formatter<OIIO::ustring> : formatter<fmt::string_view, char> {
 template<>
 struct formatter<OIIO::ustringhash> : formatter<fmt::string_view, char> {
     template<typename FormatContext>
-    auto format(const OIIO::ustringhash& h, FormatContext& ctx)
-        -> decltype(ctx.out()) const
+    auto format(const OIIO::ustringhash& h,
+                FormatContext& ctx) OIIO_FMT_CUSTOM_FORMATTER_CONST
     {
         OIIO::ustring u(h);
         return formatter<fmt::string_view, char>::format({ u.data(), u.size() },

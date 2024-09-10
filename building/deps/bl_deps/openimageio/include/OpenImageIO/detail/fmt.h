@@ -23,8 +23,9 @@
 // gcc 11+ compiler bug triggered by the definition of FMT_THROW in fmt 10.1+
 // when FMT_EXCEPTIONS=0, which results in mangling SIMD math. This nugget
 // below works around the problems for hard to understand reasons.
-#if !defined(FMT_THROW) && OIIO_GNUC_VERSION >= 110000
-#    define FMT_THROW(x) OIIO_ASSERT_MSG(0, "fmt exception: %s", (x).what())
+#if !defined(FMT_THROW) && !FMT_EXCEPTIONS && OIIO_GNUC_VERSION >= 110000
+#    define FMT_THROW(x) \
+        OIIO_ASSERT_MSG(0, "fmt exception: %s", (x).what()), std::terminate()
 #endif
 
 // Use the grisu fast floating point formatting for old fmt versions
@@ -47,6 +48,7 @@
 #    define FMT_USE_FLOAT128 0
 #endif
 
+// Suppress certain warnings generated in the fmt headers themselves
 OIIO_PRAGMA_WARNING_PUSH
 #if OIIO_GNUC_VERSION >= 70000
 #    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
@@ -57,12 +59,22 @@ OIIO_PRAGMA_WARNING_PUSH
 #if OIIO_INTEL_LLVM_COMPILER
 #    pragma GCC diagnostic ignored "-Wtautological-constant-compare"
 #endif
+#if OIIO_CLANG_VERSION >= 180000
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include <OpenImageIO/detail/fmt/format.h>
 #include <OpenImageIO/detail/fmt/ostream.h>
 #include <OpenImageIO/detail/fmt/printf.h>
 
 OIIO_PRAGMA_WARNING_POP
+
+// At some point a method signature changed
+#if FMT_VERSION >= 90000
+#    define OIIO_FMT_CUSTOM_FORMATTER_CONST const
+#else
+#    define OIIO_FMT_CUSTOM_FORMATTER_CONST
+#endif
 
 
 OIIO_NAMESPACE_BEGIN
@@ -118,7 +130,8 @@ template<typename T,
          OIIO_ENABLE_IF(has_subscript<T>::value&& has_size_method<T>::value)>
 struct index_formatter : format_parser_with_separator {
     // inherits parse() from format_parser_with_separator
-    template<typename FormatContext> auto format(const T& v, FormatContext& ctx)
+    template<typename FormatContext>
+    auto format(const T& v, FormatContext& ctx) OIIO_FMT_CUSTOM_FORMATTER_CONST
     {
         std::string vspec = elem_fmt.size() ? fmt::format("{{:{}}}", elem_fmt)
                                             : std::string("{}");
@@ -140,7 +153,7 @@ struct index_formatter : format_parser_with_separator {
 // fmtlib custom formatter that formats a type `T` as if it were an array
 // `Elem[Size]` (and it must be laid out that way in memory). The formatting
 // spec will apply to each element. For example, if the object has 3 float
-// elements and the spec is "{.3f}", then the output might be "1.234 2.345
+// elements and the spec is "{:.3f}", then the output might be "1.234 2.345
 // 3.456".
 //
 // In addition to the usual formatting spec, we also recognize the following
@@ -162,7 +175,8 @@ struct index_formatter : format_parser_with_separator {
 template<typename T, typename Elem, int Size>
 struct array_formatter : format_parser_with_separator {
     // inherits parse() from format_parser_with_separator
-    template<typename FormatContext> auto format(const T& v, FormatContext& ctx)
+    template<typename FormatContext>
+    auto format(const T& v, FormatContext& ctx) OIIO_FMT_CUSTOM_FORMATTER_CONST
     {
         std::string vspec = elem_fmt.size() ? fmt::format("{{:{}}}", elem_fmt)
                                             : std::string("{}");

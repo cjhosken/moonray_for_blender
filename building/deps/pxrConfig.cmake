@@ -12,9 +12,9 @@
 get_filename_component(PXR_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
 set(PXR_MAJOR_VERSION "0")
-set(PXR_MINOR_VERSION "23")
-set(PXR_PATCH_VERSION "11")
-set(PXR_VERSION "2311")
+set(PXR_MINOR_VERSION "24")
+set(PXR_PATCH_VERSION "05")
+set(PXR_VERSION "2405")
 
 
 # Set the root directory for USD
