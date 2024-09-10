@@ -26,7 +26,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
         # Update PATH and PXR_PLUGINPATH_NAME by expanding the current environment variables
         os.environ["PATH"] = os.path.join(rel, "bin") + ":" + os.environ.get("PATH", "")
         
-        os.environ["PXR_PLUGINPATH_NAME"] = os.path.join(rel, "plugin") + ":" + os.path.join(rel, "plugin", "usd") + ":" + os.environ.get("PXR_PLUGINPATH_NAME", "")
+        os.environ["PXR_PLUGINPATH_NAME"] = os.path.join(rel, "plugin") + ":" + os.path.join(rel, "plugin", "pxr") + ":" + os.environ.get("PXR_PLUGINPATH_NAME", "")
         
         #os.environ["HDMOONRAY_DEBUG_MODE"] = "1"
         #os.environ["HDMOONRAY_DEBUG"] = "1"
