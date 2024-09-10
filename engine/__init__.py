@@ -34,7 +34,7 @@ class MoonRayRenderEngine(bpy.types.HydraRenderEngine):
         #os.environ["HDMOONRAY_DISABLE"]="0"
         #os.environ["HDMOONRAY_RDLA_OUTPUT"]="temp"
 
-        pxr.Plug.Registry().RegisterPlugins([os.path.join(rel, "plugin")])
+        pxr.Plug.Registry().RegisterPlugins([os.path.join(rel, "plugin", "pxr", "hd_moonray")])
 
 
     def get_render_settings(self, engine_type):
